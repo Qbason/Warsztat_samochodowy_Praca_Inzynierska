@@ -48,3 +48,4 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+mechanik/mechanik/__pycache__/urls.cpython-310.pyc
