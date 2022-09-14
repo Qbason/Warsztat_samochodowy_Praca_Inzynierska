@@ -49,3 +49,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 mechanik/mechanik/__pycache__/
+env_ubuntu/
+
+<<<<<<< HEAD
+=======
+env_ubuntu/
+>>>>>>> d4c3652 (delete unneccessary things)
