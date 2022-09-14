@@ -2,7 +2,7 @@
 
 from django.db import models
 
-upload_to = "/mechanik/assets/"
+upload_to = "mechanik/assets/"
 
 # CLIENT CAR COMMENT(about client)
 class Client(models.Model):
@@ -15,7 +15,7 @@ class Client(models.Model):
         ('C', 'Client'),
     )
 
-    role = models.CharField(choices=roles)
+    role = models.CharField(choices=roles,max_length=1)
 
 class Car(models.Model):
     Nr_VIN = models.CharField(max_length=20, primary_key=True)
@@ -96,7 +96,8 @@ class Offer(models.Model):
 
     item = models.OneToOneField(
         Item,
-        primary_key=True
+        primary_key=True,
+        on_delete=models.CASCADE
     )
     price = models.PositiveBigIntegerField()
     description = models.TextField()
