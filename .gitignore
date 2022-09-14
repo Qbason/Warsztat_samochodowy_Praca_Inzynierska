@@ -51,7 +51,6 @@ docs/_build/
 mechanik/mechanik/__pycache__/
 env_ubuntu/
 
-<<<<<<< HEAD
-=======
 env_ubuntu/
->>>>>>> d4c3652 (delete unneccessary things)
+backend/mechanik/static/*
+backend/env_ubuntu/*
