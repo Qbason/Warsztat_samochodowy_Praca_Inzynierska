@@ -52,5 +52,4 @@ mechanik/mechanik/__pycache__/
 env_ubuntu/
 
 env_ubuntu/
-backend/mechanik/static/*
 backend/env_ubuntu/*
