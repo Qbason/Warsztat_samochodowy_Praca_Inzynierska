@@ -53,3 +53,5 @@ env_ubuntu/
 
 env_ubuntu/
 backend/env_ubuntu/*
+frontend/*
+!frontend/lib/
