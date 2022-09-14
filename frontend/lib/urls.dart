@@ -1,7 +1,7 @@
-var baseurl = "192.168.1.3:80";
+var baseurl = "jakubk.pl:2136";
 
-Uri geturlNotes() {
-  String url = "notes/";
+Uri geturlNews() {
+  String url = "news/1/";
 
   return Uri.http(baseurl, url);
 }

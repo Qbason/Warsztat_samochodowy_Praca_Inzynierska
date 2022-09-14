@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
 
 class ShopSearchPage extends StatefulWidget {
-  const ShopSearchPage({super.key});
+  final http.Client client;
+  const ShopSearchPage({super.key, required this.client});
 
   @override
   State<ShopSearchPage> createState() => _ShopSearchPageState();
@@ -13,7 +14,7 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawerWidget(),
+      drawer: NavigationDrawerWidget(client: widget.client),
       appBar: AppBar(
         backgroundColor: Colors.pink,
         title: const Text('Wyszukiwanie'),

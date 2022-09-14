@@ -10,10 +10,8 @@ import 'package:first_project/widgets/navigation_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'logging_in.dart';
-import 'pages/login_page.dart';
 
-import 'note.dart';
+import 'pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());

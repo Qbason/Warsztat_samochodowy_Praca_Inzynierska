@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../pages/shop_page.dart';
 import '../pages/user_page.dart';
+import 'package:http/http.dart' as http;
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 20);
-
+  final http.Client client;
+  const NavigationDrawerWidget({super.key, required this.client});
   @override
   Widget build(BuildContext context) {
     final name = 'Karol CRC';
@@ -115,7 +117,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShopPage(),
+          builder: (context) => ShopPage(client: client),
         ));
         break;
       case 3:

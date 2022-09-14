@@ -1,8 +1,0 @@
-C:/Flutter/first_project/build/windows/runner/Debug/data/icudtl.dat
-C:/Flutter/first_project/build/windows/runner/Debug/flutter_windows.dll
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/AssetManifest.json
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/FontManifest.json
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/kernel_blob.bin
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/NOTICES.Z
-C:/Flutter/first_project/build/windows/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
