@@ -1,12 +1,13 @@
-from re import template
-from django.template import loader
-from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
-from django.http import HttpResponse
+#model
+from kalendarz.models import News
+from kalendarz.serializers import NewsWebPageSerializer
 
 
-def index(request):
-    context={}
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render(context,request))
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsWebPageSerializer
+    

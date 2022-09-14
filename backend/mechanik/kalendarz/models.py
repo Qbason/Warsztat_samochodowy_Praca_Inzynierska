@@ -1,8 +1,10 @@
 
 
 from django.db import models
+from django.conf import settings
 
-upload_to = "mechanik/assets/"
+upload_to = settings.STATIC_URL[1:]
+
 
 # CLIENT CAR COMMENT(about client)
 class Client(models.Model):
