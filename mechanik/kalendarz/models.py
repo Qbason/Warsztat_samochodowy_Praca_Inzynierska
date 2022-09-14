@@ -1,66 +1,125 @@
+from statistics import quantiles
+from unicodedata import category
 from django.db import models
 
-# Create your models here.
-#models.CharField(max_length=50)
-#models.DateField()
-#models.BooleanField
-#models.IntegerField()
-#models.PositiveIntegerField()
-#models.TextField()
-#id = models.BigAutoField(primary_key=True)
-#models.OneToOneField(
-#models.ManyToManyField
+upload_to = "/mechanik/assets/"
 
-class Klienci(models.Model):
-    ID_Klient = models.BigAutoField(primary_key=True)
-    Imie = models.CharField(max_length=30)
-    Nazwisko = models.CharField(max_length=30)
-    Telefon = models.CharField(max_length=30)
-    Nr_VIN_Samochodu = models.CharField(max_length=30)
-    KomentarzMechanika = models.TextField()
+# CLIENT CAR COMMENT(about client)
+class Client(models.Model):
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=30)
 
-class Kategorie(models.Model):
-    ID_Kategorii = models.BigAutoField(primary_key=True)
-    Nazwa_Kategorii = models.CharField(max_length=50)
-
-class Newsy(models.Model):
-    ID_Newsa = models.BigAutoField(primary_key=True)
-    Tytul = models.CharField(max_length=30)
-    Tresc = models.CharField(max_length=30)
-    Zdjecie = models.CharField(max_length=200)
-    Link = models.CharField(max_length=200)
-    Data_Dodania = models.DateTimeField()
-
-class Oferty(models.Model):
-    STANY_TOWARU = (
-        ('N', 'Nowy'),
-        ('U', 'Używany'),
-        ('Z', 'Zepsuty'),
+    roles = (
+        ('M', 'Mechanic'),
+        ('C', 'Client'),
     )
-    ID_Oferty = models.BigAutoField(primary_key=True)
-    ID_Towaru = models.PositiveIntegerField()
-    Cena = models.PositiveBigIntegerField()
-    Opis = models.TextField()
-    Stan = models.CharField(max_length=1, choices=STANY_TOWARU)
-    Zdjecie = models.CharField(max_length=200)
 
-class Opinie(models.Model):
-    ID_Opinii = models.BigAutoField(primary_key=True)
-    Tresc_Opinii = models.TextField()
-    Ilosc_Gwiazdek = models.PositiveIntegerField()
-    Data_Wystawienia_Opinii = models.DateTimeField()
+    role = models.CharField(choices=roles)
 
-class Rezerwacje(models.Model):
-    ID_Rezerwacji = models.BigAutoField(primary_key=True)
-    ID_Klienta = models.PositiveIntegerField()
-    ID_Oferty = models.PositiveBigIntegerField()
-    Ilosc_Sztuk = models.PositiveIntegerField()
-    Data_Rezerwacji = models.DateTimeField()
-    Data_Ostateczna_Odbioru = models.DateTimeField()
-    Czy_Odebrano = models.BooleanField()
-
-class Samochody(models.Model):
+class Car(models.Model):
     Nr_VIN = models.CharField(max_length=20, primary_key=True)
-    Marka = models.CharField(max_length=30)
-    Model = models.CharField(max_length=30)
-    Typ_Pojazdu = models.CharField(max_length=30)
+    brand = models.CharField(max_length=30)
+    model = models.CharField(max_length=30)
+    type = models.CharField(max_length=30)
+    client = models.ForeignKey(Client,on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    content = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(Client,on_delete=models.CASCADE)
+    about_who = models.ForeignKey(Client,on_delete=models.CASCADE)
+    
+# REPAIRING
+
+class Service(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Visit(models.Model):
+
+    title = models.CharField(max_length=100)
+    
+    desc = models.TextField()
+
+    date = models.DateTimeField()
+
+    car = models.ForeignKey(
+        Car,
+        on_delete=models.CASCADE
+    )
+
+
+class Repair(models.Model):
+
+    visit = models.ForeignKey(
+        Visit,
+        on_delete=models.CASCADE
+    )
+    name = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE
+    )
+    price = models.FloatField()
+
+
+# MAIN PAGE
+class News(models.Model):
+    title = models.CharField(max_length=30)
+    content = models.CharField(max_length=30)
+    image = models.ImageField(
+        upload_to = upload_to,
+        null = True
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+
+
+
+# SHOP
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+class Item(models.Model):
+    condition_types = (
+        ('N', 'New'),
+        ('U', 'Used'),
+        ('D', 'Damaged'),
+    )
+    condition = models.CharField(choices=condition_types)
+    name = models.CharField(max_length=100)
+    quantity = models.PositiveSmallIntegerField()
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE
+    )
+
+class Offer(models.Model):
+
+    item = models.OneToOneField(
+        Item,
+        primary_key=True
+    )
+    price = models.PositiveBigIntegerField()
+    description = models.TextField()
+    image = models.ImageField(
+        upload_to = upload_to,
+        null = True
+    )
+
+
+class Opinion(models.Model):
+    content = models.TextField()
+    number_of_stars = models.PositiveIntegerField()
+    date_created = models.DateTimeField()
+    offer = models.ForeignKey(
+        Offer,
+        on_delete=models.CASCADE
+    )
+
+class Reservation(models.Model):
+    klient = models.ForeignKey(Client,on_delete=models.CASCADE)
+    offer = models.ForeignKey(Offer,on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_receive = models.DateTimeField()
+    was_taken = models.BooleanField()
+
