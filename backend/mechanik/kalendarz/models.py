@@ -22,13 +22,18 @@ class Car(models.Model):
     brand = models.CharField(max_length=30)
     model = models.CharField(max_length=30)
     type = models.CharField(max_length=30)
-    client = models.ForeignKey(Client,on_delete=models.CASCADE)
+    client = models.ForeignKey(Client,on_delete=models.CASCADE,
+    related_name="Car_Client"
+    )
 
 class Comment(models.Model):
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(Client,on_delete=models.CASCADE)
-    about_who = models.ForeignKey(Client,on_delete=models.CASCADE)
+    author = models.ForeignKey(Client,on_delete=models.CASCADE,
+        related_name="Comment_Client_Author"
+        )
+    about_who = models.ForeignKey(Client,on_delete=models.CASCADE,
+        related_name="Comment_Client_About_Who")
     
 # REPAIRING
 
@@ -46,7 +51,8 @@ class Visit(models.Model):
 
     car = models.ForeignKey(
         Car,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Visit_Car"
     )
 
 
@@ -54,11 +60,13 @@ class Repair(models.Model):
 
     visit = models.ForeignKey(
         Visit,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Repair_Visit"
     )
     name = models.ForeignKey(
         Service,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Repair_Service"
     )
     price = models.FloatField()
 
@@ -84,12 +92,13 @@ class Item(models.Model):
         ('U', 'Used'),
         ('D', 'Damaged'),
     )
-    condition = models.CharField(choices=condition_types)
+    condition = models.CharField(choices=condition_types,max_length=1)
     name = models.CharField(max_length=100)
     quantity = models.PositiveSmallIntegerField()
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Item_Category"
     )
 
 class Offer(models.Model):
@@ -97,7 +106,8 @@ class Offer(models.Model):
     item = models.OneToOneField(
         Item,
         primary_key=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Offer_Item"
     )
     price = models.PositiveBigIntegerField()
     description = models.TextField()
@@ -113,12 +123,15 @@ class Opinion(models.Model):
     date_created = models.DateTimeField()
     offer = models.ForeignKey(
         Offer,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+            related_name="Opinion_Offer"
     )
 
 class Reservation(models.Model):
-    klient = models.ForeignKey(Client,on_delete=models.CASCADE)
-    offer = models.ForeignKey(Offer,on_delete=models.CASCADE)
+    klient = models.ForeignKey(Client,on_delete=models.CASCADE,
+        related_name="Resevation_Cleint")
+    offer = models.ForeignKey(Offer,on_delete=models.CASCADE,
+        related_name="Reservation_Offer")
     quantity = models.PositiveIntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_receive = models.DateTimeField()
