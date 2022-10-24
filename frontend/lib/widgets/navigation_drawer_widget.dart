@@ -13,22 +13,36 @@ class NavigationDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = 'Karol CRC';
     final email = 'karolcrc@gmail.com';
-    final urlImage = 'https://radzymin.pl/download//797/jan-pawel-ii.jpeg';
+    final urlImage = 'assets/kuba.png';
 
     return Drawer(
         child: Material(
             color: const Color.fromRGBO(50, 75, 205, 1),
             child: ListView(
               children: <Widget>[
-                buildHeader(
-                  urlImage: urlImage,
-                  name: name,
-                  email: email,
-                  onClicked: () => Navigator.of(context).push(MaterialPageRoute(
+                GestureDetector(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => UserPage(
                       name: name,
                       urlImage: urlImage,
                     ),
+                  )),
+                  child: DrawerHeader(
+                      child: Row(
+                    children: [
+                      const Image(
+                        image: AssetImage('assets/kuba.png'),
+                        width: 10,
+                        height: 10,
+                        fit: BoxFit.cover,
+                      ),
+                      Column(
+                        children: [
+                          Text(name),
+                          Text(email),
+                        ],
+                      ),
+                    ],
                   )),
                 ),
                 Container(

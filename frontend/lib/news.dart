@@ -5,7 +5,7 @@ class News {
   String title;
   String content;
   String image;
-  DateTime date_created;
+  String date_created;
   News({
     required this.title,
     required this.content,
@@ -17,7 +17,7 @@ class News {
     String? title,
     String? content,
     String? image,
-    DateTime? date_created,
+    String? date_created,
   }) {
     return News(
       title: title ?? this.title,
@@ -32,7 +32,7 @@ class News {
       'title': title,
       'content': content,
       'image': image,
-      'date_created': date_created.millisecondsSinceEpoch,
+      'date_created': date_created,
     };
   }
 
@@ -41,8 +41,7 @@ class News {
       title: map['title'] as String,
       content: map['content'] as String,
       image: map['image'] as String,
-      date_created:
-          DateTime.fromMillisecondsSinceEpoch(map['date_created'] as int),
+      date_created: map['date_created'] as String,
     );
   }
 
