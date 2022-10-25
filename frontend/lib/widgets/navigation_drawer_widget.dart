@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import '../pages/account_page.dart';
+import '../pages/home_page_client.dart';
+import '../pages/opinions_page.dart';
+import '../pages/services_page.dart';
 import '../pages/shop_page.dart';
 import '../pages/user_page.dart';
 import 'package:http/http.dart' as http;
@@ -13,37 +17,26 @@ class NavigationDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = 'Karol CRC';
     final email = 'karolcrc@gmail.com';
-    final urlImage = 'assets/kuba.png';
+    final urlImage =
+        'https://wf1.xcdn.pl/files/14/05/01/895618_IMG_4554_82.jpg.webp';
 
     return Drawer(
         child: Material(
             color: const Color.fromRGBO(50, 75, 205, 1),
             child: ListView(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserPage(
-                      name: name,
-                      urlImage: urlImage,
+                buildHeader(
+                  urlImage: urlImage,
+                  name: name,
+                  email: email,
+                  onClicked: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => UserPage(
+                        name: name,
+                        urlImage: urlImage,
+                      ),
                     ),
-                  )),
-                  child: DrawerHeader(
-                      child: Row(
-                    children: [
-                      const Image(
-                        image: AssetImage('assets/kuba.png'),
-                        width: 10,
-                        height: 10,
-                        fit: BoxFit.cover,
-                      ),
-                      Column(
-                        children: [
-                          Text(name),
-                          Text(email),
-                        ],
-                      ),
-                    ],
-                  )),
+                  ),
                 ),
                 Container(
                   padding: padding,
@@ -69,21 +62,15 @@ class NavigationDrawerWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       buildMenuItem(
-                        text: 'Rezerwacje',
-                        icon: Icons.calendar_month_sharp,
+                        text: 'Opinie',
+                        icon: Icons.comment,
                         onClicked: () => selectedItem(context, 3),
                       ),
                       const SizedBox(height: 8),
                       buildMenuItem(
-                        text: 'Historia napraw',
-                        icon: Icons.access_time_filled_sharp,
+                        text: 'Konto',
+                        icon: Icons.person,
                         onClicked: () => selectedItem(context, 4),
-                      ),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Opinie',
-                        icon: Icons.comment,
-                        onClicked: () => selectedItem(context, 5),
                       ),
                       const SizedBox(height: 8),
                       const Divider(color: Colors.white70),
@@ -91,7 +78,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                       buildMenuItem(
                         text: 'Wyloguj',
                         icon: Icons.logout,
-                        onClicked: () => selectedItem(context, 6),
+                        onClicked: () => selectedItem(context, 5),
                       ),
                     ],
                   ),
@@ -121,12 +108,12 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
+          builder: (context) => HomePageClient(client: client),
         ));
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
+          builder: (context) => ServicesPage(client: client),
         ));
         break;
       case 2:
@@ -136,20 +123,15 @@ class NavigationDrawerWidget extends StatelessWidget {
         break;
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
+          builder: (context) => OpinionsPage(client: client),
         ));
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
+          builder: (context) => AccountPage(client: client),
         ));
         break;
       case 5:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
-        ));
-        break;
-      case 6:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => RootPage(),
         ));

@@ -20,7 +20,7 @@ class _HomePageClientState extends State<HomePageClient> {
   List<News> newslist = [];
   fetchNews() async {
     final queryParameters = {
-      'count': '3',
+      'count': '3', // how many news it should show
     };
     final response = await widget.client.get(geturlNews(queryParameters));
 
@@ -49,23 +49,37 @@ class _HomePageClientState extends State<HomePageClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      drawer: NavigationDrawerWidget(client: widget.client),
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        title: const Text('Mechanika Samochodowa'),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemCount: newslist.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(newslist[index].title),
-            leading:
-                Image.network('http://jakubk.pl:2136' + newslist[index].image),
-          );
-        },
-      ),
-    );
+        backgroundColor: Colors.grey[300],
+        drawer: NavigationDrawerWidget(client: widget.client),
+        appBar: AppBar(
+          backgroundColor: Colors.deepOrange,
+          title: const Text('Mechanika Samochodowa'),
+          centerTitle: true,
+        ),
+        body:
+            // NEWSY
+            Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: newslist.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(newslist[index].title),
+                      leading: Image.network(newslist[index].image),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        )
+
+        // ACTUAL SERVICES
+
+        // NEW ITEMS IN SHOP
+        );
   }
 }

@@ -1,7 +1,7 @@
 var baseurl = "jakubk.pl:2136";
 
 Uri geturlNews(queryParameters) {
-  String url = "najnowszenewsy/";
+  String url = "thenewestnews/";
 
   return Uri.http(baseurl, url, queryParameters);
 }

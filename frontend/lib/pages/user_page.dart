@@ -18,8 +18,8 @@ class UserPage extends StatelessWidget {
           title: Text(name),
           centerTitle: true,
         ),
-        body: const Image(
-          image: AssetImage('assets/kuba.png'),
+        body: Image.network(
+          urlImage,
           width: 300,
           height: 300,
           fit: BoxFit.cover,

@@ -27,11 +27,6 @@ class _ShopPageState extends State<ShopPage> {
     ];
     return Scaffold(
       drawer: NavigationDrawerWidget(client: widget.client),
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text('Sklep'),
-        centerTitle: true,
-      ),
       body: pages[currentPage],
       bottomNavigationBar: NavigationBar(
         destinations: const [

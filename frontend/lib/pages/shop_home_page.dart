@@ -18,48 +18,55 @@ class ShopHomePage extends StatefulWidget {
 class _ShopHomePageState extends State<ShopHomePage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Image.network(
-                  'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg',
-                ),
-                Column(
-                  children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Image.network(
-                    'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
-                Column(
-                  children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Image.network(
-                    'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
-                Column(
-                  children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Image.network(
-                    'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
-                Column(
-                  children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
-                )
-              ],
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.pink,
+        title: const Text('Sklep'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Image.network(
+                    'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg',
+                  ),
+                  Column(
+                    children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Image.network(
+                      'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
+                  Column(
+                    children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Image.network(
+                      'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
+                  Column(
+                    children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Image.network(
+                      'https://static.vecteezy.com/system/resources/thumbnails/010/882/519/small/adjustable-wrench-tool-illustration-icon-industry-work-equipment-adjustable-wrench-mechanic-spanner-key-repair-icon-construction-symbol-tool-support-utility-factory-instrument-sign-vector.jpg'),
+                  Column(
+                    children: const [Text('Nazwa'), Text('Stan'), Text('Cena')],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
