@@ -247,6 +247,9 @@ class ItemBase(models.Model):
     #purchase price (mechanic)
     price = models.DecimalField(max_digits=8,decimal_places=2)
 
+    def __str__(self) -> str:
+        return self.name
+
 # special for quantity items
 class Item(models.Model):
     itembase = models.ForeignKey(
@@ -275,15 +278,23 @@ class Offer(models.Model):
     )
     #which item is being sold
     itembase = models.OneToOneField(
-        Item,
+        ItemBase,
         primary_key=True,
         on_delete=models.PROTECT
     )
+    # possibility to hide
+    hide = models.BooleanField(default=False)
+    # when the  offer was created
+    date_created = models.DateTimeField(auto_now_add=True)
 
     #quantity
     @property
     def quantity(self):
-        return Item.objects.filter(itembase=self.itembase,reservation=None).count()
+        return self.itembase.item_set.filter(reservation=None).count()
+        # return Item.objects.filter(itembase=self.itembase,reservation=None).count()
+
+    class Meta:
+        ordering = ["-date_created"]
 
 #opinion about the product
 class Opinion(models.Model):

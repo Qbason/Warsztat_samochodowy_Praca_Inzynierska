@@ -57,3 +57,5 @@ frontend/*
 !frontend/lib/
 backend/mechanik/db.sqlite3
 test.py
+backend/mechanik/static/
+backend/mechanik/kalendarz/migrations/
