@@ -126,7 +126,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'assets'),
+    os.path.join(BASE_DIR,'static'),
 )
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
@@ -142,6 +142,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DATETIME_FORMAT': '%d-%m-%Y %H:%M:%S' ,
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',
     # )

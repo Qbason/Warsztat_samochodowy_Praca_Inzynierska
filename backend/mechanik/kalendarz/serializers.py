@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from .models import News
 
-class NewsWebPageSerializer(ModelSerializer):
+class NewsSerializer(ModelSerializer):
 
     class Meta:
         model = News

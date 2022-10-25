@@ -56,3 +56,4 @@ backend/env_ubuntu/*
 frontend/*
 !frontend/lib/
 backend/mechanik/db.sqlite3
+test.py
