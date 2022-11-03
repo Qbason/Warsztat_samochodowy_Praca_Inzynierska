@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import  generics
 
 #model
 from kalendarz.models import *
@@ -115,10 +116,22 @@ class MyOwnSchema(ManualSchema):
         
 
         super().__init__(fields, description[d1:d2], "application/json")
-class NewNewsList(APIView):
+class NewNewsList(generics.ListAPIView):
 
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
 
-    def get(self,request,format=None):
+    def get_queryset(self):
+        count = self.request.GET.get("count")
+        
+        #raise error if is incorrect
+        count = validate_count(count)
+
+        queryset = self.queryset[:count]
+
+        return queryset
+
+    def get(self,*args, **kwargs):
         """
         description:
             Return a list of news
@@ -129,24 +142,31 @@ class NewNewsList(APIView):
             - count<->required<->
         :query
         """
-        count = request.GET.get("count")
         
-        #raise error if is incorrect
-        count = validate_count(count)
 
-        queryset = News.objects.all()[:count]
-
-        serializedqueryset = NewsSerializer(queryset,many=True,context={'request':request})
-
-        return Response(serializedqueryset.data)
-    
+        return super().get(*args,**kwargs)
 
     schema = MyOwnSchema(description=get.__doc__,)
 
 
-class NewOfferList(APIView):
+class NewOfferList(generics.ListAPIView):
 
-    def get(self,request,format=None):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
+
+    def get_queryset(self):
+        count = self.request.GET.get("count")
+        
+        #raise error if is incorrect
+        count = validate_count(count)
+
+        queryset = Offer.objects.filter(itembase__item__reservation=None).annotate(
+            ile = Count('itembase__item')
+        ).filter(ile__gt=0)[:count]
+
+        return queryset
+
+    def get(self,*args, **kwargs):
         """
         description:
             Return a list of offers
@@ -157,17 +177,19 @@ class NewOfferList(APIView):
             - count<->required<->
         :query
         """
-        count = request.GET.get("count")
-        #raise error if is incorrect
-        count = validate_count(count)
+        return super().get(*args, **kwargs)
 
-        queryset = Offer.objects.filter(itembase__item__reservation=None).annotate(
-            ile = Count('itembase__item')
-        ).filter(ile__gt=0)[:count]
+        # count = request.GET.get("count")
+        # #raise error if is incorrect
+        # count = validate_count(count)
 
-        serializedqueryset = OfferSerializer(queryset,many=True,context={'request':request})
+        # queryset = Offer.objects.filter(itembase__item__reservation=None).annotate(
+        #     ile = Count('itembase__item')
+        # ).filter(ile__gt=0)[:count]
 
-        return Response(serializedqueryset.data)
+        # serializedqueryset = OfferSerializer(queryset,many=True,context={'request':request})
+
+        # return Response(serializedqueryset.data)
 
     schema = MyOwnSchema(description=get.__doc__)
 

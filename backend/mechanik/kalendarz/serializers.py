@@ -93,6 +93,13 @@ class CarTypeSerializer(ModelSerializer):
         model = CarType
         fields = '__all__'
 
+
+class CarPlaceSerializer(ModelSerializer):
+
+    class Meta:
+        model = CarPlace
+        fields = '__all__'
+
 class UserInfoSerializer(ModelSerializer):
 
     user = serializers.ReadOnlyField(source='user.username')

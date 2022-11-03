@@ -75,6 +75,9 @@ class Car(models.Model):
     # photo
     photo = models.ImageField(upload_to = upload_to, null = True)
 
+    def __str__(self) -> str:
+        return f"{self.Nr_VIN}\n{self.carbrandmodel}"
+
     
 #REVIEW
 class Comment(models.Model):
