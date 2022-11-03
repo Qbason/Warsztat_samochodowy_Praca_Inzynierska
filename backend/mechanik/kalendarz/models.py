@@ -36,8 +36,14 @@ class CarModel(models.Model):
     # model like corsa (brand-opel) etc.
     model = models.CharField(max_length=100)
 
+    def __str__(self) -> str:
+        return self.model
+
 class CarBrand(models.Model):
     brand = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.brand
 
 class CarBrandModel(models.Model):
     # brand like: BMW, AUDI etc.
@@ -45,9 +51,15 @@ class CarBrandModel(models.Model):
     #carmodel - > ex. corsa
     carmodel = models.ForeignKey(CarModel,on_delete=models.SET_NULL,null=True) 
 
+    def __str__(self) -> str:
+        return f"{self.carbrand} {self.carmodel}"
+
 class CarType(models.Model):
     # type like: car, truck, bus etc.
     type = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.type
 
 class Car(models.Model):
     """

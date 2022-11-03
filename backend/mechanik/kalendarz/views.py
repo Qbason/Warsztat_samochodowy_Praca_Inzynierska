@@ -37,6 +37,43 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+class RepairViewSet(viewsets.ModelViewSet):
+    queryset = Repair.objects.all()
+    serializer_class = RepairSerializer
+
+class VisitViewSet(viewsets.ModelViewSet):
+    queryset = Visit.objects.all()
+    serializer_class = VisitSerializer
+class CarModelViewSet(viewsets.ModelViewSet):
+    queryset = CarModel.objects.all()
+    serializer_class = CarModelSerializer
+
+class CarBrandViewSet(viewsets.ModelViewSet):
+    queryset = CarBrand.objects.all()
+    serializer_class = CarBrandSerializer
+
+class CarBrandModelViewSet(viewsets.ModelViewSet):
+    queryset = CarBrandModel.objects.all()
+    serializer_class = CarBrandModelSerializer
+    
+class CarTypeViewSet(viewsets.ModelViewSet):
+    queryset = CarType.objects.all()
+    serializer_class = CarTypeSerializer
+
+class CarViewSet(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user.userinfo)
+
+class UserInfoViewSet(viewsets.ModelViewSet):
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 
 class MyOwnSchema(ManualSchema):
@@ -131,5 +168,34 @@ class NewOfferList(APIView):
         serializedqueryset = OfferSerializer(queryset,many=True,context={'request':request})
 
         return Response(serializedqueryset.data)
+
+    schema = MyOwnSchema(description=get.__doc__)
+
+
+
+class YourReparingCars(APIView):
+
+    def get(self,request,format=None):
+        """
+        description:
+            Return a list of reparings
+            Length list is equal to "count" parameter
+            Repair: id_visit(can be null), list[id_services],cartaken(true/false)
+        :description
+        query:
+            - count<->required<->
+        :query
+        """
+        user = request.user
+
+        repairs = Repair.objects.filter(
+            visit__car__owner__user=user
+        )
+        repairs_serialized = RepairSerializer(repairs,many=True)
+
+        print(user.userinfo)
+
+
+        return Response(repairs_serialized.data)
 
     schema = MyOwnSchema(description=get.__doc__)
