@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../news.dart';
 import '../widgets/navigation_drawer_widget.dart';
+import '../session.dart';
 
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 class HomePageClient extends StatefulWidget {
-  final http.Client client;
-  const HomePageClient({super.key, required this.client});
+  final Session session;
+  const HomePageClient({super.key, required this.session});
 
   @override
   State<HomePageClient> createState() => _HomePageClientState();
@@ -22,14 +23,16 @@ class _HomePageClientState extends State<HomePageClient> {
     final queryParameters = {
       'count': '3', // how many news it should show
     };
-    final response = await widget.client.get(geturlNews(queryParameters));
+    final response = await widget.session.get(geturlNews(queryParameters));
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      List responseNews = jsonDecode(response.body);
+      final responseNews = jsonDecode(response.body);
       print(responseNews);
-      responseNews.forEach((element) {
+      responseNews['results'].forEach((element) {
         newslist.add(News.fromMap(element));
       });
       setState(() {});
@@ -50,7 +53,7 @@ class _HomePageClientState extends State<HomePageClient> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
-        drawer: NavigationDrawerWidget(client: widget.client),
+        drawer: NavigationDrawerWidget(session: widget.session),
         appBar: AppBar(
           backgroundColor: Colors.deepOrange,
           title: const Text('Mechanika Samochodowa'),

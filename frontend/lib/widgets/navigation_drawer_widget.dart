@@ -8,11 +8,12 @@ import '../pages/services_page.dart';
 import '../pages/shop_page.dart';
 import '../pages/user_page.dart';
 import 'package:http/http.dart' as http;
+import '../session.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 20);
-  final http.Client client;
-  const NavigationDrawerWidget({super.key, required this.client});
+  final Session session;
+  const NavigationDrawerWidget({super.key, required this.session});
   @override
   Widget build(BuildContext context) {
     final name = 'Karol CRC';
@@ -108,27 +109,27 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => HomePageClient(client: client),
+          builder: (context) => HomePageClient(session: session),
         ));
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ServicesPage(client: client),
+          builder: (context) => ServicesPage(session: session),
         ));
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShopPage(client: client),
+          builder: (context) => ShopPage(session: session),
         ));
         break;
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => OpinionsPage(client: client),
+          builder: (context) => OpinionsPage(session: session),
         ));
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AccountPage(client: client),
+          builder: (context) => AccountPage(session: session),
         ));
         break;
       case 5:

@@ -1,6 +1,10 @@
 import 'package:first_project/pages/home_page_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:first_project/urls.dart';
+import '../session.dart';
+//import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 class LoginPage extends StatefulWidget {
@@ -12,10 +16,18 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // client
-  var client = http.Client();
+  Session session = Session();
+  //var client = http.Client();
   // text controllers
   TextEditingController controllerlogin = TextEditingController();
   TextEditingController controllerpassword = TextEditingController();
+
+  Future<String?> attemptLogIn(String username, String password) async {
+    var responseCreateToken = await http.post(geturlCreateToken(),
+        body: {"username": username, "password": password});
+    if (responseCreateToken.statusCode == 200) return responseCreateToken.body;
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +97,28 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
-                    onTap: () {
-                      if (controllerlogin.text == 'karol' &&
+                    onTap: () async {
+                      var username = controllerlogin.text;
+                      var password = controllerpassword.text;
+                      bool result =
+                          await session.attemptLogIn(username, password);
+                      try {
+                        if (result) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return HomePageClient(session: session);
+                              },
+                            ),
+                          );
+                        } else {
+                          print("TOKEN NIE UTWORZONY");
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+
+                      /*if (controllerlogin.text == 'karol' &&
                           controllerpassword.text == '123') {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -95,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                         );
-                      } else {}
+                      } else {}*/
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),

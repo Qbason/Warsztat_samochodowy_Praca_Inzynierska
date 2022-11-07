@@ -4,12 +4,13 @@ import 'package:first_project/news.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
+import '../session.dart';
 
 const int itemCount = 10;
 
 class ShopHomePage extends StatefulWidget {
-  final http.Client client;
-  const ShopHomePage({super.key, required this.client});
+  final Session session;
+  const ShopHomePage({super.key, required this.session});
 
   @override
   State<ShopHomePage> createState() => _ShopHomePageState();

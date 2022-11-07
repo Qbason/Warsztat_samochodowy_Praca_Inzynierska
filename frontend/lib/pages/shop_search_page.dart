@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
+import '../session.dart';
 
 class ShopSearchPage extends StatefulWidget {
-  final http.Client client;
-  const ShopSearchPage({super.key, required this.client});
+  final Session session;
+  const ShopSearchPage({super.key, required this.session});
 
   @override
   State<ShopSearchPage> createState() => _ShopSearchPageState();
@@ -16,7 +17,7 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawerWidget(client: widget.client),
+      drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
         backgroundColor: Colors.pink,
         title: Row(

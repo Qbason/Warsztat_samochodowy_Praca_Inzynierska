@@ -5,10 +5,11 @@ import 'package:first_project/pages/shop_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
+import '../session.dart';
 
 class ShopPage extends StatefulWidget {
-  final http.Client client;
-  const ShopPage({super.key, required this.client});
+  final Session session;
+  const ShopPage({super.key, required this.session});
 
   @override
   State<ShopPage> createState() => _ShopPageState();
@@ -20,13 +21,13 @@ class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      ShopHomePage(client: widget.client),
-      ShopSearchPage(client: widget.client),
-      ShopCategoriesPage(client: widget.client),
-      ShopCartPage(client: widget.client)
+      ShopHomePage(session: widget.session),
+      ShopSearchPage(session: widget.session),
+      ShopCategoriesPage(session: widget.session),
+      ShopCartPage(session: widget.session)
     ];
     return Scaffold(
-      drawer: NavigationDrawerWidget(client: widget.client),
+      drawer: NavigationDrawerWidget(session: widget.session),
       body: pages[currentPage],
       bottomNavigationBar: NavigationBar(
         destinations: const [
