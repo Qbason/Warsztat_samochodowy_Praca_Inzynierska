@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound, ValidationError
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,6 +18,9 @@ import coreapi
 import coreschema
 
 from kalendarz.validators import validate_count
+
+
+from random  import randint
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
@@ -120,6 +124,8 @@ class MyOwnSchema(ManualSchema):
         
 
         super().__init__(fields, description[d1:d2], "application/json")
+
+#For Main Page
 class NewNewsList(generics.ListAPIView):
 
     queryset = News.objects.all()
@@ -152,7 +158,6 @@ class NewNewsList(generics.ListAPIView):
         return super().get(*args,**kwargs)
 
     schema = MyOwnSchema(description=get.__doc__,)
-
 
 class NewOfferList(generics.ListAPIView):
 
@@ -199,8 +204,6 @@ class NewOfferList(generics.ListAPIView):
 
     schema = MyOwnSchema(description=get.__doc__)
 
-
-
 class YourReparingCars(APIView):
 
     def get(self,request,format=None):
@@ -228,3 +231,42 @@ class YourReparingCars(APIView):
         return Response(repairs_serialized.data)
 
     schema = MyOwnSchema(description=get.__doc__)
+
+
+#For recreate password
+
+class GenerateCode(APIView):
+
+
+    def send_an_email(self):
+
+        return
+
+    def post(self,request,format=None):
+        """
+        description:
+            Generated code, which is sent to email
+        :description
+        body:
+            - email<->required<->
+        :body
+        """
+        # return Response(request.data)
+        try:
+            email = request.data['email']
+        except:
+            raise ValidationError("Email nie został podany!")
+
+
+        code_length  = 5 # cannot be longer than code in GeneratedCode model!!
+        code = "".join(str(randint(0,9)) for i in range(code_length))
+        if UserInfo.objects.filter(email=email).first():
+            print()
+        else:
+            raise NotFound("Brak takiego emaila")
+
+        return Response(code)
+
+    schema = MyOwnSchema(description=post.__doc__)
+
+

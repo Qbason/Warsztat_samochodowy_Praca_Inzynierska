@@ -108,3 +108,8 @@ class UserInfoSerializer(ModelSerializer):
         model = UserInfo
         fields = '__all__'
 
+class  GeneratedCodeSerializer(ModelSerializer):
+
+    class Meta:
+        model = GeneratedCode
+        fields = '__all__'

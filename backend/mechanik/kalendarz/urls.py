@@ -91,5 +91,6 @@ urlpatterns = [
     path('thenewestnews/',views.NewNewsList.as_view()),
     path('thenewestoffers/',views.NewOfferList.as_view()),
     path('yourreparingcars/',views.YourReparingCars.as_view()),
+    path('generatecode/', views.GenerateCode.as_view()),
     path('docs/',include_docs_urls(title="Documentation API mechanic",public=False,authentication_classes=[BasicAuthentication]))
 ]+s

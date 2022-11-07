@@ -7,6 +7,16 @@ upload_to = settings.STATIC_URL[1:]
 
 User = settings.AUTH_USER_MODEL # auth.User
 
+# Auth code for password recovery
+
+class GeneratedCode(models.Model):
+    code = models.CharField(max_length=6)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    date_generated = models.DateTimeField(auto_now_add = True)
+    date_expired = models.DateTimeField()
+    confirmed = models.BooleanField(default=False)
+
+
 class UserInfo(models.Model):
 
     #user
