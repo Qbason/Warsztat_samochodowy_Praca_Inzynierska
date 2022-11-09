@@ -22,7 +22,7 @@ router.register(
     basename="news"
 )
 router.register(
-    r'offfer',
+    r'offer',
     views.OfferViewSet,
     basename="offer"
 )
@@ -52,14 +52,29 @@ router.register(
     basename="visit"
 )
 router.register(
+    r'visitdescription',
+    views.VisitDescriptionViewSet,
+    basename="visitdescription"
+)
+router.register(
+    r'visitreason',
+    views.VisitReasonViewSet,
+    basename="visitreason"
+)
+router.register(
     r'car',
     views.CarViewSet,
     basename="car"
 )
 router.register(
-    r'userinfo',
+    r'carplace',
+    views.CarPlaceViewSet,
+    basename="carplace"
+)
+router.register(
+    r'alluserinfo',
     views.UserInfoViewSet,
-    basename="userinfo"
+    basename="alluserinfo"
 )
 router.register(
     r'carmodel',
@@ -81,6 +96,16 @@ router.register(
     views.CarTypeViewSet,
     basename="cartype"
 )
+router.register(
+    r'service',
+    views.ServiceViewSet,
+    basename="service"
+)
+router.register(
+    r'servicename',
+    views.ServiceNameViewSet,
+    basename="servicename"
+)
 
 s = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
@@ -92,5 +117,6 @@ urlpatterns = [
     path('thenewestoffers/',views.NewOfferList.as_view()),
     path('yourreparingcars/',views.YourReparingCars.as_view()),
     path('generatecode/', views.GenerateCode.as_view()),
+    path('myuserinfo/', views.MyUserInfo.as_view()),
     path('docs/',include_docs_urls(title="Documentation API mechanic",public=False,authentication_classes=[BasicAuthentication]))
 ]+s

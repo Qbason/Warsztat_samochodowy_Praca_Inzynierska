@@ -116,10 +116,16 @@ class VisitDescription(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
 
+    def __str__(self) -> str:
+        return f"{self.title} {self.content}"
+
 class VisitReason(models.Model):
     reason = models.CharField(max_length=100,unique=True)
     #how much time does it need in minutes
     duration = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self) -> str:
+        return self.reason
 
 # make an appointment to mechanic
 class Visit(models.Model):
@@ -172,6 +178,9 @@ class ServiceName(models.Model):
     # usual price for this service
     price = models.DecimalField(decimal_places=2,max_digits=8,null=True)
 
+    def __str__(self) -> str:
+        return self.name
+
     
 class Service(models.Model):
     #service name
@@ -186,11 +195,16 @@ class Service(models.Model):
     )
     progress = models.CharField(choices=state,max_length=20)
     #how much time does it consume
-    date_start = models.DateTimeField(auto_now_add=True)
+    date_start = models.DateTimeField(null=True)
     #adding to the event would increase the duration
     duration = models.SmallIntegerField(default=0)
     #monitoring when state is done then we got the date_end
-    date_end = models.DateTimeField()
+    date_end = models.DateTimeField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.servicename} {self.price}zł"
+
+
 class Repair(models.Model):
 
     # repair can be related to visit

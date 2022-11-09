@@ -41,6 +41,18 @@ class RepairSerializer(ModelSerializer):
         model = Repair
         fields = ['pk',"visit","services","cartaken"]
 
+class VisitReasonSerializer(ModelSerializer):
+
+    class Meta:
+        model = VisitReason
+        fields = '__all__'
+
+class VisitDescriptionSerializer(ModelSerializer):
+
+    class Meta:
+        model = VisitDescription
+        fields = '__all__'
+
 class VisitSerializer(ModelSerializer):
 
     class Meta:
@@ -82,8 +94,16 @@ class CarBrandModelSerializer(ModelSerializer):
 
 class ServiceSerializer(ModelSerializer):
 
+
     class Meta:
         model = Service
+        fields = '__all__'
+        read_only_fields = ['date_start','date_end','duration']
+
+class ServiceNameSerializer(ModelSerializer):
+
+    class Meta:
+        model = ServiceName
         fields = '__all__'
 
 
@@ -102,11 +122,11 @@ class CarPlaceSerializer(ModelSerializer):
 
 class UserInfoSerializer(ModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.username')
+    # user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = UserInfo
-        fields = '__all__'
+        fields = ['name','surname','phone_number','email','avatar']
 
 class  GeneratedCodeSerializer(ModelSerializer):
 

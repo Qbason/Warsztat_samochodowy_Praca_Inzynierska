@@ -42,9 +42,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+class ServiceViewSet(viewsets.ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+class ServiceNameViewSet(viewsets.ModelViewSet):
+    queryset = ServiceName.objects.all()
+    serializer_class = ServiceNameSerializer
+
 class RepairViewSet(viewsets.ModelViewSet):
     queryset = Repair.objects.all()
     serializer_class = RepairSerializer
+
+class VisitReasonViewSet(viewsets.ModelViewSet):
+    queryset = VisitReason.objects.all()
+    serializer_class = VisitReasonSerializer
+
+class VisitDescriptionViewSet(viewsets.ModelViewSet):
+    queryset = VisitDescription.objects.all()
+    serializer_class = VisitDescriptionSerializer
 
 class VisitViewSet(viewsets.ModelViewSet):
     queryset = Visit.objects.all()
@@ -65,6 +81,10 @@ class CarTypeViewSet(viewsets.ModelViewSet):
     queryset = CarType.objects.all()
     serializer_class = CarTypeSerializer
 
+class CarPlaceViewSet(viewsets.ModelViewSet):
+    queryset = CarPlace.objects.all()
+    serializer_class = CarPlaceSerializer
+
 class CarViewSet(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -78,6 +98,8 @@ class UserInfoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
 
 
 
@@ -232,6 +254,41 @@ class YourReparingCars(APIView):
 
     schema = MyOwnSchema(description=get.__doc__)
 
+
+
+class MyUserInfo(generics.GenericAPIView):
+    """
+    Show info about logged in user
+    """
+
+
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoSerializer
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        userinfo = UserInfo.objects.filter(user=user).first()
+
+        if not userinfo:
+            raise NotFound
+        
+        return userinfo
+
+    def get(self,*args, **kwargs):
+        """
+        description:
+        Return info about logged in user like: name, surname,
+        phone_number, email, avatar
+        :description
+        """
+        userinfo = self.get_queryset()
+        serializered_userinfo = self.get_serializer(userinfo,many=False)
+
+        return Response(serializered_userinfo.data)
+
+    schema = MyOwnSchema(get.__doc__)
 
 #For recreate password
 
