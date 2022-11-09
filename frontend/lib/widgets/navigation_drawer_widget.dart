@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:first_project/classess/myuserinfo.dart';
 import 'package:flutter/material.dart';
 
+import '../fetchdata/fetchfunctionsuser.dart';
 import '../main.dart';
 import '../pages/account_page.dart';
 import '../pages/home_page_client.dart';
@@ -8,18 +12,43 @@ import '../pages/services_page.dart';
 import '../pages/shop_page.dart';
 import '../pages/user_page.dart';
 import 'package:http/http.dart' as http;
-import '../session.dart';
+import '../classess/session.dart';
+import '../urls.dart';
 
-class NavigationDrawerWidget extends StatelessWidget {
-  final padding = const EdgeInsets.symmetric(horizontal: 20);
+class NavigationDrawerWidget extends StatefulWidget {
   final Session session;
   const NavigationDrawerWidget({super.key, required this.session});
+
+  @override
+  State<NavigationDrawerWidget> createState() => _NavigationDrawerWidgetState();
+}
+
+class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
+  final padding = const EdgeInsets.symmetric(horizontal: 20);
+
+  Myuserinfo? myuserinfo;
+
+  fetch() async {
+    myuserinfo = await fetchMyUserInfo(widget.session);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => fetch());
+  }
+
   @override
   Widget build(BuildContext context) {
-    final name = 'Karol CRC';
-    final email = 'karolcrc@gmail.com';
-    final urlImage =
-        'https://wf1.xcdn.pl/files/14/05/01/895618_IMG_4554_82.jpg.webp';
+    final String name =
+        myuserinfo != null ? myuserinfo?.name ?? 'Name' : 'Name';
+    final String email =
+        myuserinfo != null ? myuserinfo?.email ?? 'Surname' : 'Surname';
+    final String urlImage = myuserinfo != null
+        ? myuserinfo?.avatar ??
+            'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
+        : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
 
     return Drawer(
         child: Material(
@@ -109,27 +138,29 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => HomePageClient(session: session),
+          builder: (context) => HomePageClient(
+            session: widget.session,
+          ),
         ));
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ServicesPage(session: session),
+          builder: (context) => ServicesPage(session: widget.session),
         ));
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShopPage(session: session),
+          builder: (context) => ShopPage(session: widget.session),
         ));
         break;
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => OpinionsPage(session: session),
+          builder: (context) => OpinionsPage(session: widget.session),
         ));
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AccountPage(session: session),
+          builder: (context) => AccountPage(session: widget.session),
         ));
         break;
       case 5:

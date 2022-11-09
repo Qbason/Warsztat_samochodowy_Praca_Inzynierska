@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
-import '../session.dart';
+import '../classess/session.dart';
 
 class ShopCategoriesPage extends StatefulWidget {
   final Session session;

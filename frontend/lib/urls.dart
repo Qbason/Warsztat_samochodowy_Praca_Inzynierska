@@ -12,6 +12,23 @@ Uri geturlRefreshToken() {
   return Uri.http(baseurl, url);
 }
 
+Uri geturlNewestOffers(queryParameters) {
+  String url = "thenewestoffers/";
+
+  return Uri.http(baseurl, url, queryParameters);
+}
+
+Uri geturlOffers() {
+  String url = "offers/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlMyUserInfo() {
+  String url = "myuserinfo/";
+  return Uri.http(baseurl, url);
+}
+
 Uri geturlNews(queryParameters) {
   String url = "thenewestnews/";
 

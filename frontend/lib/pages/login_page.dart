@@ -2,7 +2,9 @@ import 'package:first_project/pages/home_page_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:first_project/urls.dart';
-import '../session.dart';
+import '../classess/myuserinfo.dart';
+import '../classess/session.dart';
+import '../fetchdata/fetchfunctionsuser.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // ignore_for_file: prefer_const_literals_to_create_immutables
@@ -104,6 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                           await session.attemptLogIn(username, password);
                       try {
                         if (result) {
+                          // final Myuserinfo myuserinfo =
+                          //     await fetchMyUserInfo(session);
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (BuildContext context) {

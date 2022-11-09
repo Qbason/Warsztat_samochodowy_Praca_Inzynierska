@@ -5,7 +5,7 @@ import 'package:first_project/pages/shop_search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/navigation_drawer_widget.dart';
-import '../session.dart';
+import '../classess/session.dart';
 
 class ShopPage extends StatefulWidget {
   final Session session;
