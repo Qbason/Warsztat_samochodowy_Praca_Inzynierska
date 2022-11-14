@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.exceptions import ValidationError
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,18 +13,10 @@ from kalendarz.serializers import *
 
 from django.db.models import Count
 
-from rest_framework.schemas import ManualSchema
-import coreapi
-import coreschema
-
-from kalendarz.validators import validate_count
-
 
 from random  import randint
 
-class NewsViewSet(viewsets.ModelViewSet):
-    queryset = News.objects.all()
-    serializer_class = NewsSerializer
+
     
 class OfferViewSet(viewsets.ModelViewSet):
     queryset = Offer.objects.all()
@@ -92,94 +84,15 @@ class CarViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.userinfo)
 
-class UserInfoViewSet(viewsets.ModelViewSet):
-    queryset = UserInfo.objects.all()
-    serializer_class = UserInfoSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 
 
 
 
-class MyOwnSchema(ManualSchema):
 
-    def __init__(self,description):
-
-        # main_info="description"
-        locations = ["path","query","form","body"]
-        fields = []
-
-        d1 = description.find("description:")+len("description:")
-        d2 = description.find(":description")
-        for location in locations:
-            l1 = description.find(location+":")
-            l2 = description.find(":"+location)
-            if(l1!=-1 and l2!=-1):
-                loc = description[l1+len(location)+1:l2]
-                founded = -1
-                while(True):
-                    n1 = loc.find("- ",founded+1)
-                    if n1==-1:
-                        break
-                    n2 = loc.find("<->",n1)
-                    if n2==-1:
-                        break
-                    name = loc[n1+len("- "):n2]
-                    t = loc[n2+len("<->"):]
-                    t1 = t.find("<->")
-                    if t1==-1:
-                        required = False
-                    else:
-                        
-                        required = (t[:t1].strip()=="required")
-                    fields.append(
-                        coreapi.Field(
-                            name,
-                            required=required,
-                            location=location,
-                            schema=coreschema.String()
-                        )
-                    )
-                    founded = n1
-        
-
-        super().__init__(fields, description[d1:d2], "application/json")
 
 #For Main Page
-class NewNewsList(generics.ListAPIView):
 
-    queryset = News.objects.all()
-    serializer_class = NewsSerializer
-
-    def get_queryset(self):
-        count = self.request.GET.get("count")
-        
-        #raise error if is incorrect
-        count = validate_count(count)
-
-        queryset = self.queryset[:count]
-
-        return queryset
-
-    def get(self,*args, **kwargs):
-        """
-        description:
-            Return a list of news
-            Length list is equal to "count" parameter
-            News: title:str, content:str, image:str, date_created:datatime
-        :description
-        query:
-            - count<->required<->
-            - page<->
-        :query
-        """
-        
-
-        return super().get(*args,**kwargs)
-
-    schema = MyOwnSchema(description=get.__doc__,)
 
 class NewOfferList(generics.ListAPIView):
 
@@ -254,41 +167,6 @@ class YourReparingCars(APIView):
 
     schema = MyOwnSchema(description=get.__doc__)
 
-
-
-class MyUserInfo(generics.GenericAPIView):
-    """
-    Show info about logged in user
-    """
-
-
-    queryset = UserInfo.objects.all()
-    serializer_class = UserInfoSerializer
-
-    def get_queryset(self):
-
-        user = self.request.user
-
-        userinfo = UserInfo.objects.filter(user=user).first()
-
-        if not userinfo:
-            raise NotFound
-        
-        return userinfo
-
-    def get(self,*args, **kwargs):
-        """
-        description:
-        Return info about logged in user like: name, surname,
-        phone_number, email, avatar
-        :description
-        """
-        userinfo = self.get_queryset()
-        serializered_userinfo = self.get_serializer(userinfo,many=False)
-
-        return Response(serializered_userinfo.data)
-
-    schema = MyOwnSchema(get.__doc__)
 
 #For recreate password
 

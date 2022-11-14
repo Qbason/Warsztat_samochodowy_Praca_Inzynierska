@@ -1,26 +1,10 @@
 from kalendarz import views
-from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from django.conf.urls.static import static
-from django.conf import settings
 
-from rest_framework.authentication import BasicAuthentication
-
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
-from rest_framework.documentation import include_docs_urls
 
 router = DefaultRouter()
 
-router.register(
-    r'news',
-    views.NewsViewSet,
-    basename="news"
-)
+
 router.register(
     r'offer',
     views.OfferViewSet,
@@ -107,16 +91,14 @@ router.register(
     basename="servicename"
 )
 
-s = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('thenewestnews/',views.NewNewsList.as_view()),
-    path('thenewestoffers/',views.NewOfferList.as_view()),
-    path('yourreparingcars/',views.YourReparingCars.as_view()),
-    path('generatecode/', views.GenerateCode.as_view()),
-    path('myuserinfo/', views.MyUserInfo.as_view()),
-    path('docs/',include_docs_urls(title="Documentation API mechanic",public=False,authentication_classes=[BasicAuthentication]))
-]+s
+    # path('', include(router.urls)),
+    # path('thenewestnews/',views.NewNewsList.as_view()),
+    # path('thenewestoffers/',views.NewOfferList.as_view()),
+    # path('yourreparingcars/',views.YourReparingCars.as_view()),
+    # path('generatecode/', views.GenerateCode.as_view()),
+    # path('myuserinfo/', views.MyUserInfo.as_view()),
+    # path('docs/',include_docs_urls(title="Documentation API mechanic",public=False,authentication_classes=[BasicAuthentication]))
+]

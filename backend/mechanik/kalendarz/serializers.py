@@ -4,11 +4,6 @@ from rest_framework import serializers
 
 from .models import *
 
-class NewsSerializer(ModelSerializer):
-
-    class Meta:
-        model = News
-        fields = ['id','title','content','image','date_created']
 
 class OfferSerializer(ModelSerializer):
 
@@ -120,13 +115,7 @@ class CarPlaceSerializer(ModelSerializer):
         model = CarPlace
         fields = '__all__'
 
-class UserInfoSerializer(ModelSerializer):
 
-    # user = serializers.ReadOnlyField(source='user.username')
-
-    class Meta:
-        model = UserInfo
-        fields = ['name','surname','phone_number','email','avatar']
 
 class  GeneratedCodeSerializer(ModelSerializer):
 

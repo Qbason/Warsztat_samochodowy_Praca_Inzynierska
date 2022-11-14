@@ -16,11 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include,path
 from rest_framework.documentation import include_docs_urls
+from django.conf.urls.static import static
+from django.conf import settings
+from rest_framework.authentication import BasicAuthentication
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
-    path('', include('kalendarz.urls')),
+    path('news/', include('news.urls')),
+    path('userinfo/', include('userinfo.urls')),
+
+
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
-    path(r'docs/', include_docs_urls(title='Polls API',public=True,))
+    path('docs/',include_docs_urls(title="Documentation API mechanic",public=False,authentication_classes=[BasicAuthentication]))
     # path(r'docs/', include_docs_urls(title='Polls API',public=True,authentication_classes=[BasicAuthentication],permission_classes=[IsAuthenticated]))
 
-]
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

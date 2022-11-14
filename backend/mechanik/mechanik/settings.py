@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
 
-    'kalendarz.apps.KalendarzConfig',
+
+    'news.apps.NewsConfig',
+    'userinfo.apps.UserinfoConfig',
     'rest_framework',
     'corsheaders'
 ]
