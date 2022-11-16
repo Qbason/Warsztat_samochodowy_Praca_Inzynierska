@@ -1,4 +1,9 @@
 from django.db import models
+from django.conf import settings
+
+upload_to = settings.STATIC_URL[1:]
+
+from car.models import Car
 
 
 #mechanic can have  many places where he can repairs cars

@@ -13,7 +13,7 @@ class NewsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
 
-class NewNewsList(generics.ListAPIView):
+class TheNewestNews(generics.ListAPIView):
 
     queryset = News.objects.all()
     serializer_class = NewsSerializer

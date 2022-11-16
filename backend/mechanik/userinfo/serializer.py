@@ -1,4 +1,4 @@
-from userinfo.models import UserInfo
+from userinfo.models import UserInfo, GeneratedCode
 from rest_framework.serializers import ModelSerializer
 
 class UserInfoSerializer(ModelSerializer):
@@ -7,4 +7,12 @@ class UserInfoSerializer(ModelSerializer):
 
     class Meta:
         model = UserInfo
-        fields = ['name','surname','phone_number','email','avatar']
+        fields = ['pk','name','surname','phone_number','email','avatar']
+
+
+class  GeneratedCodeSerializer(ModelSerializer):
+
+    class Meta:
+        model = GeneratedCode
+        fields = '__all__'
+

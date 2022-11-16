@@ -43,6 +43,9 @@ INSTALLED_APPS = [
 
 
     'news.apps.NewsConfig',
+    'car.apps.CarConfig',
+    'shop.apps.ShopConfig',
+    'visit.apps.VisitConfig',
     'userinfo.apps.UserinfoConfig',
     'rest_framework',
     'corsheaders'
