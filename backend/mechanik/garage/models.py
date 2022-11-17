@@ -14,8 +14,12 @@ class Comment(models.Model):
     stars = models.PositiveSmallIntegerField(default=5)
     # when reviewed was added
     date_created = models.DateTimeField(auto_now_add=True)
-    # who adddes the review
-    author = models.ForeignKey(UserInfo,on_delete=models.SET_NULL,null=True)
+    # who added the review
+    author = models.OneToOneField(
+        UserInfo,
+        on_delete=models.CASCADE,
+        primary_key=True
+        )
 
 
 
@@ -31,4 +35,7 @@ class OpeningHours(models.Model):
         start = datetime.now().replace(minute=0,hour=8,second=0,microsecond=0)
         end = datetime.now().replace(minute=0,hour=17,second=0,microsecond=0)
 
-        return (start,end)
+        return (start.hour,end.hour)
+
+    def __str__(self) -> str:
+        return f"{self.time_start.hour}:{self.time_start.minute}-{self.time_end.hour}:{self.time_end.minute}"

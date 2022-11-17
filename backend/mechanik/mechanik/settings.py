@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 
     'news.apps.NewsConfig',
+    'garage.apps.GarageConfig',
     'car.apps.CarConfig',
     'shop.apps.ShopConfig',
     'visit.apps.VisitConfig',
@@ -123,7 +124,7 @@ TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

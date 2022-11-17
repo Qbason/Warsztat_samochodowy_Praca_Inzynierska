@@ -7,7 +7,7 @@ class UserInfoSerializer(ModelSerializer):
 
     class Meta:
         model = UserInfo
-        fields = ['pk','name','surname','phone_number','email','avatar']
+        fields = ['pk','name','surname','phone_number','email','avatar','role']
 
 
 class  GeneratedCodeSerializer(ModelSerializer):
