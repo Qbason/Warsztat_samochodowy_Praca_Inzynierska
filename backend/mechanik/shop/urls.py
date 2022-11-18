@@ -24,6 +24,11 @@ router.register(
     views.CategoryViewSet,
     basename='category'
 )
+router.register(
+    r'reservation',
+    views.ReservationViewSet,
+    basename='reservation'
+)
 
 
 urlpatterns = [

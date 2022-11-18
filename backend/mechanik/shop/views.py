@@ -4,13 +4,13 @@ from rest_framework import  generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from shop.models import Offer,Item,ItemBase,Category
+from shop.models import Offer,Item,ItemBase,Category, Reservation
 
 from basetools.validator import validate_count
 from basetools.schema import MyOwnSchema
 from basetools.custompermissions import IsMechanicPermission
 from shop.serializer import OfferSerializer,ItemBaseSerializer,\
-    ItemSerializer,CategorySerializer
+    ItemSerializer,CategorySerializer, ReservationSerializer
 from django.db.models import Count
 
 
@@ -67,4 +67,10 @@ class ItemBaseViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated,IsMechanicPermission]
+
+
+class ReservationViewSet(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]

@@ -1,14 +1,20 @@
 
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from rest_framework import serializers
 
-from shop.models import Offer,ItemBase,Item,Category
+from shop.models import Offer,ItemBase,Item,Category, Reservation
 
 class OfferSerializer(ModelSerializer):
 
+    quantity = ReadOnlyField()
+
     class Meta:
         model = Offer
-        fields = ['pk','title','description','price','image','date_created','itembase','quantity']
+        fields = '__all__'
+        read_only_fields = [
+            'date_created',
+            'quantity'
+        ]
 
 
 class ItemBaseSerializer(ModelSerializer):
@@ -28,3 +34,9 @@ class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['pk','name']
+
+class ReservationSerializer(ModelSerializer):
+
+    class Meta:
+        model = Reservation
+        fields = '__all__'
