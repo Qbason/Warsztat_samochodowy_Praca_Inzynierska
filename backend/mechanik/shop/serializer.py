@@ -1,6 +1,8 @@
 
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 
 from shop.models import Offer,ItemBase,Item,Category, Reservation
 
@@ -15,6 +17,25 @@ class OfferSerializer(ModelSerializer):
             'date_created',
             'quantity'
         ]
+
+class OfferReservationkSerializer(serializers.Serializer):
+    #from offer
+    pk = serializers.IntegerField(min_value=1)
+    #from reservation
+    date_receive = serializers.DateTimeField()
+
+    def validate_pk(self,value):
+        offer = Offer.objects.filter(
+            pk=value
+        ).first()
+        print(
+            self.context['request'].data.get('pk')
+        )
+        #checking if offer exist
+        if not offer:
+            raise ValidationError("This offer doesn't exist")
+            
+        return value
 
 
 class ItemBaseSerializer(ModelSerializer):

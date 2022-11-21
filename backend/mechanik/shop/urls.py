@@ -29,10 +29,17 @@ router.register(
     views.ReservationViewSet,
     basename='reservation'
 )
+router.register(
+    r'makereservation',
+    views.MakeReservationOffer,
+    basename='makereservation'
+)
+
 
 
 urlpatterns = [
     path('thenewestoffers/',views.TheNewestOffers.as_view()),
+    # path('makereservation/',views.MakeReservationOffer.as_view())
     path('',include(router.urls))
     
 ]

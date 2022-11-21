@@ -2,7 +2,7 @@ from  rest_framework.exceptions  import ValidationError
 
 
 
-def validate_count(count):
+def validate_int(count):
     if count is None:
             raise ValidationError("Brak podanego parametru")
     try:

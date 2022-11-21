@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from news.serializers import NewsSerializer
 from rest_framework import generics
 from basetools.schema import MyOwnSchema
-from basetools.validator import validate_count
+from basetools.validator import validate_int
 from basetools.custompermissions import IsMechanicPermission
 from rest_framework.permissions import IsAuthenticated
 
@@ -22,7 +22,7 @@ class TheNewestNews(generics.ListAPIView):
         count = self.request.GET.get("count")
         
         #raise error if is incorrect
-        count = validate_count(count)
+        count = validate_int(count)
 
         queryset = self.queryset[:count]
 

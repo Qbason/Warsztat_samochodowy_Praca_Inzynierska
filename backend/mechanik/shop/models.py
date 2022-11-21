@@ -13,7 +13,7 @@ class Reservation(models.Model):
     client = models.ForeignKey(UserInfo,on_delete=models.SET_NULL,null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_receive = models.DateTimeField()
-    was_taken = models.BooleanField()
+    was_taken = models.BooleanField(default=False)
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
