@@ -1,12 +1,14 @@
 import 'dart:convert';
 
-import 'package:first_project/pages/shop_page.dart';
+import 'package:first_project/pages/shop/shop_offer_page.dart';
+import 'package:first_project/pages/shop/shop_page.dart';
 import 'package:first_project/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../classess/myuserinfo.dart';
 import '../classess/news.dart';
 import '../classess/offers.dart';
+import '../fetchdata/fetchfunctionsshop.dart';
 import '../widgets/navigation_drawer_widget.dart';
 import '../classess/session.dart';
 
@@ -21,62 +23,23 @@ class HomePageClient extends StatefulWidget {
 }
 
 class _HomePageClientState extends State<HomePageClient> {
-  List<News> newslist = [];
-  fetchNews() async {
-    final queryParameters = {
-      'count': '3', // how many news it should show
-    };
-    final response = await widget.session.get(geturlNews(queryParameters));
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      final responseNews = jsonDecode(response.body);
-      print(responseNews);
-      responseNews['results'].forEach((element) {
-        newslist.add(News.fromMap(element));
-      });
-      setState(() {});
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load News');
-    }
+  List<News> newestnewslist = [];
+  fetchNews(session) async {
+    newestnewslist = await fetchNewestNews(session);
+    setState(() {});
   }
 
   List<Offers> newestofferslist = [];
-  fetchNewestOffers() async {
-    final queryParameters = {
-      'count': '3', // how many news it should show
-    };
-    final response =
-        await widget.session.get(geturlNewestOffers(queryParameters));
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      final responsenewestOffers = jsonDecode(response.body);
-      print(responsenewestOffers);
-      responsenewestOffers['results'].forEach((element) {
-        newestofferslist.add(Offers.fromMap(element));
-      });
-      setState(() {});
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load Newest Offers');
-    }
+  fetchOffers(session) async {
+    newestofferslist = await fetchNewestOffers(session);
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    fetchNews();
-    fetchNewestOffers();
+    fetchNews(widget.session);
+    fetchOffers(widget.session);
   }
 
   @override
@@ -99,11 +62,11 @@ class _HomePageClientState extends State<HomePageClient> {
                   child: SizedBox(
                     height: 200,
                     child: ListView.builder(
-                      itemCount: newslist.length,
+                      itemCount: newestnewslist.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          title: Text(newslist[index].title),
-                          leading: Image.network(newslist[index].image),
+                          title: Text(newestnewslist[index].title),
+                          leading: Image.network(newestnewslist[index].image),
                         );
                       },
                     ),
@@ -125,8 +88,10 @@ class _HomePageClientState extends State<HomePageClient> {
                           leading: Image.network(newestofferslist[index].image),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ShopPage(session: widget.session),
+                              builder: (context) => ShopOfferPage(
+                                session: widget.session,
+                                offer: newestofferslist[index],
+                              ),
                             ));
                           },
                         );

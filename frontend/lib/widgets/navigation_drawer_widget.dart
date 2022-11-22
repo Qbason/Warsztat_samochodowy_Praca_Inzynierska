@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:first_project/classess/myuserinfo.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../fetchdata/fetchfunctionsuser.dart';
 import '../main.dart';
 import '../pages/account_page.dart';
 import '../pages/home_page_client.dart';
 import '../pages/opinions_page.dart';
-import '../pages/services_page.dart';
-import '../pages/shop_page.dart';
+import '../pages/services/services_page.dart';
+import '../pages/shop/shop_page.dart';
 import '../pages/user_page.dart';
 import 'package:http/http.dart' as http;
 import '../classess/session.dart';
@@ -26,10 +27,22 @@ class NavigationDrawerWidget extends StatefulWidget {
 class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   final padding = const EdgeInsets.symmetric(horizontal: 20);
 
-  Myuserinfo? myuserinfo;
+  String name = 'Name';
+  String surname = 'Surname';
+  String phonenumber = 'Phone number';
+  String email = 'Email';
+  String avatar = 'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg';
 
   fetch() async {
-    myuserinfo = await fetchMyUserInfo(widget.session);
+    final myuserinfo = await SharedPreferences.getInstance();
+
+    name = myuserinfo.getString('name') ?? 'Name';
+    surname = myuserinfo.getString('surname') ?? 'Surname';
+    phonenumber = myuserinfo.getString('phonenumber') ?? 'Phone number';
+    email = myuserinfo.getString('email') ?? 'Email';
+    avatar = myuserinfo.getString('avatar') ??
+        'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg';
+
     setState(() {});
   }
 
@@ -41,7 +54,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final String name =
+    /*final String name =
         myuserinfo != null ? myuserinfo?.name ?? 'Name' : 'Name';
     final String email =
         myuserinfo != null ? myuserinfo?.email ?? 'Surname' : 'Surname';
@@ -49,21 +62,21 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         ? myuserinfo?.avatar ??
             'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
         : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
-
+    */
     return Drawer(
         child: Material(
             color: const Color.fromRGBO(50, 75, 205, 1),
             child: ListView(
               children: <Widget>[
                 buildHeader(
-                  urlImage: urlImage,
-                  name: name,
+                  urlImage: avatar,
+                  name: '$name $surname',
                   email: email,
                   onClicked: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => UserPage(
                         name: name,
-                        urlImage: urlImage,
+                        urlImage: avatar,
                       ),
                     ),
                   ),
@@ -164,9 +177,11 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         ));
         break;
       case 5:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RootPage(),
-        ));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => RootPage(),
+            ),
+            (route) => false);
         break;
     }
   }

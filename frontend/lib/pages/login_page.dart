@@ -2,6 +2,7 @@ import 'package:first_project/pages/home_page_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:first_project/urls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../classess/myuserinfo.dart';
 import '../classess/session.dart';
 import '../fetchdata/fetchfunctionsuser.dart';
@@ -106,32 +107,46 @@ class _LoginPageState extends State<LoginPage> {
                           await session.attemptLogIn(username, password);
                       try {
                         if (result) {
-                          // final Myuserinfo myuserinfo =
-                          //     await fetchMyUserInfo(session);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return HomePageClient(session: session);
-                              },
-                            ),
-                          );
+                          final Myuserinfo myuserinfo1 =
+                              await fetchMyUserInfo(session);
+
+                          //saving my user info to storage
+
+                          final myuserinfo =
+                              await SharedPreferences.getInstance();
+
+                          await myuserinfo.setString('name', myuserinfo1.name);
+                          await myuserinfo.setString(
+                              'surname', myuserinfo1.surname);
+                          await myuserinfo.setString(
+                              'phonenumber', myuserinfo1.phonenumber);
+                          await myuserinfo.setString(
+                              'email', myuserinfo1.email);
+                          await myuserinfo.setString(
+                              'avatar', myuserinfo1.avatar);
+
+                          //saving session tokens info to storage
+
+                          final sessionstorage =
+                              await SharedPreferences.getInstance();
+
+                          await sessionstorage.setString(
+                              'tokenaccess', session.tokenaccess);
+                          await sessionstorage.setString(
+                              'tokenrefresh', session.tokenrefresh);
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    HomePageClient(session: session),
+                              ),
+                              (route) => false);
                         } else {
                           print("TOKEN NIE UTWORZONY");
                         }
                       } catch (e) {
                         print(e);
                       }
-
-                      /*if (controllerlogin.text == 'karol' &&
-                          controllerpassword.text == '123') {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return HomePageClient(client: client);
-                            },
-                          ),
-                        );
-                      } else {}*/
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),

@@ -13,7 +13,6 @@ fetchMyUserInfo(session) async {
     // then parse the JSON.
     final responseMyuserinfo = jsonDecode(response.body);
     print(responseMyuserinfo);
-
     return Myuserinfo.fromMap(responseMyuserinfo);
   } else {
     // If the server did not return a 200 OK response,

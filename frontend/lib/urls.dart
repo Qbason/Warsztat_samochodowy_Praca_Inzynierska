@@ -7,13 +7,13 @@ Uri geturlCreateToken() {
 }
 
 Uri geturlRefreshToken() {
-  String url = "/api/token/refresh/";
+  String url = "api/token/refresh/";
 
   return Uri.http(baseurl, url);
 }
 
 Uri geturlNewestOffers(queryParameters) {
-  String url = "thenewestoffers/";
+  String url = "shop/thenewestoffers/";
 
   return Uri.http(baseurl, url, queryParameters);
 }
@@ -25,36 +25,30 @@ Uri geturlOffers() {
 }
 
 Uri geturlMyUserInfo() {
-  String url = "myuserinfo/";
+  String url = "userinfo/my";
   return Uri.http(baseurl, url);
 }
 
-Uri geturlNews(queryParameters) {
-  String url = "thenewestnews/";
+Uri geturlNewestNews(queryParameters) {
+  String url = "/news/thenewest/";
 
   return Uri.http(baseurl, url, queryParameters);
 }
 
-Uri createurlNote() {
-  String url = "notes/";
+Uri geturlNews() {
+  String url = "news/";
 
   return Uri.http(baseurl, url);
 }
 
-Uri geturlNote(int id) {
-  String url = "notes/$id/";
+Uri geturlItembase(id) {
+  String url = "/shop/itembase/$id";
 
   return Uri.http(baseurl, url);
 }
 
-Uri updateurlNote(int id) {
-  String url = "notes/$id/";
-
-  return Uri.http(baseurl, url);
-}
-
-Uri deleteurlNote(int id) {
-  String url = "notes/$id/";
+Uri geturlCategories() {
+  String url = "/shop/category/";
 
   return Uri.http(baseurl, url);
 }
