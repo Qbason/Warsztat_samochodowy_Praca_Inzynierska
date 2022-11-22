@@ -65,10 +65,13 @@ class MyReservedItems(viewsets.GenericViewSet):
 
         user = request.user
 
-        items = ItemBase.objects.filter(
-            reservation__client=user.userinfo,
-            reservation__was_taken=False
+        itembase = ItemBase.objects.filter(
+            item__isnull=False,
+            item__reservation__client=user.userinfo,
+            item__reservation__was_taken=False
         ).distinct(field_names=['itembase'])
+
+        
 
         #ilosc zarezerowanych sztuk
         #offer
@@ -151,7 +154,7 @@ class MakeReservationOffer(viewsets.GenericViewSet):
 
         #checking if we have enough products
         if avail_items.count()<number:
-            result['info'] = "All items has been reserved"
+            result['info'] = "All items already has been reserved"
             return Response(
                 result,
                 status=status.HTTP_406_NOT_ACCEPTABLE
