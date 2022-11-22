@@ -12,7 +12,8 @@ User = settings.AUTH_USER_MODEL
 class Reservation(models.Model):
     client = models.ForeignKey(UserInfo,on_delete=models.SET_NULL,null=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    date_receive = models.DateTimeField()
+    # timem, when mechanic give the item to the customer
+    date_receive = models.DateTimeField(null=True)
     was_taken = models.BooleanField(default=False)
 
 class Category(models.Model):
@@ -52,6 +53,9 @@ class Item(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
+
+    def __str__(self) -> str:
+        return f"{self.pk} {self.itembase.name} R:{self.reservation}"
 
 class Offer(models.Model):
 

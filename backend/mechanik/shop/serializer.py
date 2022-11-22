@@ -21,20 +21,28 @@ class OfferSerializer(ModelSerializer):
 class OfferReservationkSerializer(serializers.Serializer):
     #from offer
     pk = serializers.IntegerField(min_value=1)
-    #from reservation
-    date_receive = serializers.DateTimeField()
+    # nubmer
+    number = serializers.IntegerField(min_value=1)
 
     def validate_pk(self,value):
         offer = Offer.objects.filter(
-            pk=value
+            pk=value,
+            hide=False
         ).first()
-        print(
-            self.context['request'].data.get('pk')
-        )
         #checking if offer exist
         if not offer:
             raise ValidationError("This offer doesn't exist")
-            
+        
+        #checking if user doesn't have more than 2 rezervation of different products 
+        user = self.context['request'].user
+        number_of_reservation = Item.objects.filter(
+            reservation__client__user=user,
+            reservation__was_taken=False
+        ).distinct().count()
+        if number_of_reservation>2:
+            raise ValidationError("User has more than 2 reservation active")
+
+
         return value
 
 

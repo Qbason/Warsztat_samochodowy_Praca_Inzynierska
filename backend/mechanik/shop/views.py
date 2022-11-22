@@ -84,72 +84,54 @@ class MakeReservationOffer(viewsets.GenericViewSet):
     Creating new reservation and assign it to item
     Need:
         pk(offer)
-        data receive
+        Number of products
     """
     serializer_class = OfferReservationkSerializer
     queryset = Offer.objects.all()
     permission_classes = [IsAuthenticated]
 
-    def check_number_of_reservation_general(self,user):
-
-        if user.is_anonymous:
-            raise PermissionDenied
-
-        number_of_reservation = Item.objects.filter(
-            reservation__client__user=user,
-            reservation__was_taken=False
-        ).distinct().count()
-
-        return number_of_reservation
-
-
 
     def create(self,request,*args, **kwargs):
 
-        
         serializer = OfferReservationkSerializer(data=request.data,context={'request':request})
         if not serializer.is_valid():
             return Response(
-                serializer.errors
+                serializer.errors,
+                status.HTTP_400_BAD_REQUEST
             )
         pk_offer = serializer.validated_data.get('pk')
-        date_receive = serializer.validated_data.get('date_receive')
+        number = int(serializer.validated_data.get('number'))
 
         result = {
             "result":"FAIL"
         }
 
-        #checking the number of reservation (all products)
-        number_of_reservation = self.check_number_of_reservation_general(request.user)
-        if number_of_reservation>2:
-            result['info']="Too much reservation products"
-            return Response(
-                result,
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
 
-        offer = self.get_queryset().filter(
-            pk=pk_offer
-        ).first()
-
+        #checking has much items are in database
         avail_items = Item.objects.filter(
-            itembase = offer.itembase
+            itembase__offer__pk=pk_offer, #offer.itembase
+            reservation=None
         )
-        if not avail_items:
+
+        #checking if we have enough products
+        if avail_items.count()<number:
             result['info'] = "All items has been reserved"
             return Response(
                 result,
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
-
+        # create reservation
         reservation = Reservation(
-            client = request.user.userinfo,
-            date_receive=date_receive
+            client = request.user.userinfo
         )
         reservation.save()
-
-        avail_items[0].reservation = reservation
-        avail_items[0].save()
+        
+        # assign reservation to items
+        Item.objects.filter(
+            pk__in=list(element.pk for element in avail_items[:number])
+        ).update(
+            reservation=reservation
+        )
 
         result['result'] = "OK"
         result['info'] = "The item has been reserved"
