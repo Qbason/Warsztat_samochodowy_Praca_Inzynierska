@@ -5,10 +5,12 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
-
+from rest_framework import mixins
+from rest_framework.validators import ValidationError
 from shop.models import Offer,Item,ItemBase,Category, Reservation
 
 from basetools.validator import validate_int
+from basetools.serializers import CountSerializer
 from basetools.schema import MyOwnSchema
 from basetools.custompermissions import IsMechanicPermission
 from shop.serializer import OfferSerializer,ItemBaseSerializer,\
@@ -21,45 +23,80 @@ class OfferViewSet(viewsets.ModelViewSet):
     serializer_class = OfferSerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
-class TheNewestOffers(generics.ListAPIView):
-
+class TheNewestOffers(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """
+    description:
+        Return a list of offers
+        Length list is equal to "count" parameter 
+        Offer: title, description,price,image,date_created,itembase,quantity
+    query:
+        - count<->required<->
+        - page<->notrequired<->
+    """
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
     def get_queryset(self):
-        count = self.request.GET.get("count")
-        
-        #raise error if is incorrect
-        count = validate_int(count)
+        data = self.request.GET
+
+        serializer = CountSerializer(data=data,context={'request':self.request})
+
+        if not serializer.is_valid():
+            raise ValidationError(
+                detail=serializer.errors
+            )
 
         queryset = Offer.objects.filter(itembase__item__reservation=None).annotate(
             ile = Count('itembase__item')
-        ).filter(ile__gt=0)[:count]
+        ).filter(ile__gt=0)[:serializer.validated_data.get('count')]
 
         return queryset
-
-    def get(self,*args, **kwargs):
-        """
-        description:
-            Return a list of offers
-            Length list is equal to "count" parameter 
-            Offer: title, description,price,image,date_created,itembase,quantity
-        :description
-        query:
-            - count<->required<->
-            - page<->notrequired<->
-        :query
-        """
-        return super().get(*args, **kwargs)
-
-    schema = MyOwnSchema(description=get.__doc__)
+    
 
 
+    
+class MyReservedItems(viewsets.GenericViewSet):
+
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def list(self,request,*args, **kwargs):
+
+        user = request.user
+
+        items = ItemBase.objects.filter(
+            reservation__client=user.userinfo,
+            reservation__was_taken=False
+        ).distinct(field_names=['itembase'])
+
+        #ilosc zarezerowanych sztuk
+        #offer
+        #itembase
+
+        return Response()
+
+
+class ItemBaseForClientViewSet(viewsets.ReadOnlyModelViewSet):
+    # queryset = Item.objects.all()
+    serializer_class = ItemBaseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        return ItemBase.objects.filter(
+            offer__isnull=False,
+            offer__hide = False,
+        ).all()
+        
+    
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]
+
+
 
 class ItemBaseViewSet(viewsets.ModelViewSet):
     queryset = ItemBase.objects.all()
@@ -81,10 +118,9 @@ class ReservationViewSet(viewsets.ModelViewSet):
 
 class MakeReservationOffer(viewsets.GenericViewSet):
     """
-    Creating new reservation and assign it to item
-    Need:
-        pk(offer)
-        Number of products
+    Creating new reservation and assign it to item, need:
+        * pk(offer)
+        * Number of products(number)
     """
     serializer_class = OfferReservationkSerializer
     queryset = Offer.objects.all()

@@ -2,17 +2,28 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
+from rest_framework import status
 
 from shop.models import Offer,ItemBase,Item,Category, Reservation
 
 class OfferSerializer(ModelSerializer):
 
     quantity = ReadOnlyField()
-
+    pk = ReadOnlyField()
+    
     class Meta:
         model = Offer
-        fields = '__all__'
+        fields = [
+            'pk',
+            'itembase',
+            'quantity',
+            'title',
+            'description',
+            'price',
+            'image',
+            'hide',
+            'date_created'
+        ]
         read_only_fields = [
             'date_created',
             'quantity'
@@ -31,7 +42,7 @@ class OfferReservationkSerializer(serializers.Serializer):
         ).first()
         #checking if offer exist
         if not offer:
-            raise ValidationError("This offer doesn't exist")
+            raise ValidationError("This offer doesn't exist",code=status.HTTP_406_NOT_ACCEPTABLE)
         
         #checking if user doesn't have more than 2 rezervation of different products 
         user = self.context['request'].user
@@ -40,7 +51,7 @@ class OfferReservationkSerializer(serializers.Serializer):
             reservation__was_taken=False
         ).distinct().count()
         if number_of_reservation>2:
-            raise ValidationError("User has more than 2 reservation active")
+            raise ValidationError("User has more than 2 reservation active",code=status.HTTP_406_NOT_ACCEPTABLE)
 
 
         return value

@@ -20,6 +20,11 @@ router.register(
     basename='itembase'
 )
 router.register(
+    r'itembaseClient',
+    views.ItemBaseForClientViewSet,
+    basename='itembaseClient'
+)
+router.register(
     r'category',
     views.CategoryViewSet,
     basename='category'
@@ -34,11 +39,16 @@ router.register(
     views.MakeReservationOffer,
     basename='makereservation'
 )
+router.register(
+    r'thenewestoffers',
+    views.TheNewestOffers,
+    basename='thenewestoffers'
+)
 
 
 
 urlpatterns = [
-    path('thenewestoffers/',views.TheNewestOffers.as_view()),
+    # path('thenewestoffers/',views.TheNewestOffers.as_view()),
     # path('makereservation/',views.MakeReservationOffer.as_view())
     path('',include(router.urls))
     
