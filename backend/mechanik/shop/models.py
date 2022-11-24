@@ -9,6 +9,7 @@ User = settings.AUTH_USER_MODEL
 
 
 # SHOP
+
 class Reservation(models.Model):
     client = models.ForeignKey(UserInfo,on_delete=models.SET_NULL,null=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -56,6 +57,17 @@ class Item(models.Model):
 
     def __str__(self) -> str:
         return f"{self.pk} {self.itembase.name} R:{self.reservation}"
+
+# class CanceledReservation(models.Model):
+#     reservation = models.OneToOneField(Reservation,on_delete=models.CASCADE)
+#     itembase = models.ForeignKey(
+#         ItemBase,
+#         on_delete=models.SET_NULL,
+#         null=True
+#     )
+    
+
+
 
 class Offer(models.Model):
 

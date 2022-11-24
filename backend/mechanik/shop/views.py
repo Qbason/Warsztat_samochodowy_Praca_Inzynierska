@@ -4,17 +4,14 @@ from rest_framework import  generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
-from rest_framework import status
-from rest_framework import mixins
+from rest_framework import status,mixins
 from rest_framework.validators import ValidationError
 from shop.models import Offer,Item,ItemBase,Category, Reservation
-
 from basetools.validator import validate_int
 from basetools.serializers import CountSerializer
 from basetools.schema import MyOwnSchema
 from basetools.custompermissions import IsMechanicPermission
-from shop.serializer import OfferSerializer,ItemBaseSerializer,\
-    ItemSerializer,CategorySerializer, ReservationSerializer, OfferReservationkSerializer
+from shop.serializer import *
 from django.db.models import Count
 
 
@@ -22,6 +19,26 @@ class OfferViewSet(viewsets.ModelViewSet):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]
+
+    
+class OfferSearchByTitleViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """
+    We need:
+        * title
+    """
+    serializer_class = OfferNoHideSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Offer.objects.all()
+        title = self.request.query_params.get('title')
+        if not title:
+            raise ValidationError(
+                {"title":"Need title"}
+            )
+        queryset = queryset.filter(title__icontains=title).all()
+        
+        return queryset
 
 class TheNewestOffers(viewsets.GenericViewSet,mixins.ListModelMixin):
     """
@@ -34,7 +51,7 @@ class TheNewestOffers(viewsets.GenericViewSet,mixins.ListModelMixin):
         - page<->notrequired<->
     """
     queryset = Offer.objects.all()
-    serializer_class = OfferSerializer
+    serializer_class = OfferNoHideSerializer
 
     def get_queryset(self):
         data = self.request.GET
@@ -65,28 +82,24 @@ class MyReservedItems(viewsets.GenericViewSet):
 
         user = request.user
 
-        itembase = ItemBase.objects.filter(
-            item__isnull=False,
-            item__reservation__client=user.userinfo,
-            item__reservation__was_taken=False
-        ).distinct(field_names=['itembase'])
+        offer = Offer.objects.filter(
+            itembase__item__reservation__client=user.userinfo,
+            itembase__item__reservation__was_taken=False,
+        ).annotate(reserved_number=Count('itembase'))
 
-        
+        serialized_offer = OfferReservedSerializer(offer,many=True)
 
-        #ilosc zarezerowanych sztuk
-        #offer
-        #itembase
-
-        return Response()
+        return Response(serialized_offer.data)
 
 
 class ItemBaseForClientViewSet(viewsets.ReadOnlyModelViewSet):
     # queryset = Item.objects.all()
-    serializer_class = ItemBaseSerializer
+    serializer_class = ItemBaseClientSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
 
+        #need fix to show itembase hidden if user has reserved this item
         return ItemBase.objects.filter(
             offer__isnull=False,
             offer__hide = False,
@@ -111,12 +124,111 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
+    
+class OfferByCategory(viewsets.GenericViewSet,mixins.ListModelMixin):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        data = self.request.GET
+        serializer = OfferByCategorySerializer(data=data)
+
+        if not serializer.is_valid():
+            raise ValidationError(
+                detail = serializer.errors
+            )
+        #pk category
+        pk = serializer.validated_data.get('pk')
+
+
+        obj = Offer.objects.filter(
+            itembase__category__pk=pk
+        ).all()
+
+        return obj
+
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
+
+class CancelReservationOffer(viewsets.GenericViewSet,mixins.DestroyModelMixin):
+
+    serializer_class = OfferCancelReservationSerializer
+    queryset = Offer.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+
+        serializer = OfferCancelReservationSerializer(
+            data=request.data,
+            context={'request':request}
+        )
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status.HTTP_400_BAD_REQUEST
+            )
+
+        result = {
+            "result":"FAIL"
+        }
+
+
+        #pk
+        pk = serializer.validated_data.get("pk")
+        #number
+        number = serializer.validated_data.get("number")
+        #user
+        user = request.user
+        
+        items = Item.objects.filter(
+            reservation__client = user.userinfo,
+            itembase__offer__pk = pk,
+            reservation__was_taken=False
+            #hide=True, if someone reserved smth, which is not available now
+        )
+        reservation = items.first().reservation
+
+
+        diff_offer_number = items.count()-number
+
+        if diff_offer_number<0:
+            result['info'] = "You don't have enough items reserved"
+            return Response(
+                result,
+                status=status.HTTP_406_NOT_ACCEPTABLE
+            )
+        
+        to_delete_reservation_itme_pk = items.all()[:number].values_list('pk')
+        Item.objects.filter(pk__in=to_delete_reservation_itme_pk).update(reservation=None)
+        if Item.objects.filter(reservation=reservation).count()==0:
+            reservation.delete()
+
+
+        result['result'] = "OK"
+        result['info']="Reservation cancelation successful"
+
+
+
+
+        return Response(result)
 
 
 class MakeReservationOffer(viewsets.GenericViewSet):

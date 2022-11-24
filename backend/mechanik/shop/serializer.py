@@ -3,8 +3,11 @@ from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
+from django.db.models import Count
 
 from shop.models import Offer,ItemBase,Item,Category, Reservation
+
+
 
 class OfferSerializer(ModelSerializer):
 
@@ -29,6 +32,46 @@ class OfferSerializer(ModelSerializer):
             'quantity'
         ]
 
+class OfferNoHideSerializer(ModelSerializer):
+
+    quantity = ReadOnlyField()
+    pk = ReadOnlyField()
+    
+    class Meta:
+        model = Offer
+        fields = [
+            'pk',
+            'itembase',
+            'quantity',
+            'title',
+            'description',
+            'price',
+            'image',
+            'date_created'
+        ]
+        read_only_fields = [
+            'date_created',
+            'quantity'
+        ]
+
+class OfferCancelReservationSerializer(serializers.Serializer):
+    #from offer
+    pk = serializers.IntegerField(min_value=1)
+    # number of products
+    number = serializers.IntegerField(min_value=1)
+
+    def validate_pk(self, value):
+
+        offer = Offer.objects.filter(
+            pk=value,
+        )
+        if not offer.count()>0:
+            raise ValidationError("You can't cancel not existing offer")
+
+        return value
+
+
+
 class OfferReservationkSerializer(serializers.Serializer):
     #from offer
     pk = serializers.IntegerField(min_value=1)
@@ -49,7 +92,16 @@ class OfferReservationkSerializer(serializers.Serializer):
         number_of_reservation = Item.objects.filter(
             reservation__client__user=user,
             reservation__was_taken=False
-        ).distinct().count()
+        ).aggregate(Count('itembase'))['itembase__count']#distinct().count()
+        print(
+            Item.objects.filter(
+            reservation__client__user=user,
+            reservation__was_taken=False
+        ).annotate(numb=Count('itembase'))
+        )
+        print(
+            number_of_reservation
+        )
         if number_of_reservation>2:
             raise ValidationError("User has more than 2 reservation active",code=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -62,6 +114,12 @@ class ItemBaseSerializer(ModelSerializer):
     class Meta:
         model = ItemBase
         fields = ['pk','name','condition','category','price']
+
+class ItemBaseClientSerializer(ModelSerializer):
+
+    class Meta:
+        model = ItemBase
+        fields = ['pk','name','condition','category']
 
 class ItemSerializer(ModelSerializer):
 
@@ -80,3 +138,41 @@ class ReservationSerializer(ModelSerializer):
     class Meta:
         model = Reservation
         fields = '__all__'
+
+    
+class OfferByCategorySerializer(serializers.Serializer):
+
+    pk=serializers.IntegerField(min_value=1)
+
+    def validate_pk(self, value):
+        
+        if not Category.objects.filter(pk=value).first():
+            raise ValidationError(
+                "This category doesn't exist"
+            )
+
+        return value
+
+
+class OfferReservedSerializer(ModelSerializer):
+
+    reserved_number=serializers.IntegerField()
+
+    pk = ReadOnlyField()
+    
+    class Meta:
+        model = Offer
+        fields = [
+            'pk',
+            'itembase',
+            'title',
+            'description',
+            'price',
+            'image',
+            'date_created',
+            'reserved_number'
+        ]
+        read_only_fields = [
+            'date_created',
+        ]
+

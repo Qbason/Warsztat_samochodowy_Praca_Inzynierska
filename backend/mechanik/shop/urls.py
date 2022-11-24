@@ -5,7 +5,7 @@ from shop import views
 router = DefaultRouter()
 
 router.register(
-    r'offers',
+    r'offer',
     views.OfferViewSet,
     basename="offer"
 )
@@ -43,6 +43,27 @@ router.register(
     r'thenewestoffers',
     views.TheNewestOffers,
     basename='thenewestoffers'
+)
+
+router.register(
+    r'cancelreservation',
+    views.CancelReservationOffer,
+    basename='cancelreservation'
+)
+router.register(
+    r'myreservation',
+    views.MyReservedItems,
+    basename='myreservation'
+)
+router.register(
+    r'offerbycategory',
+    views.OfferByCategory,
+    basename='offerbycategory'
+)
+router.register(
+    r'offersearchbytitle',
+    views.OfferSearchByTitleViewSet,
+    basename='offersearchbytitle'
 )
 
 
