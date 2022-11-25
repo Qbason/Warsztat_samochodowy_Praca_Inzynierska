@@ -11,6 +11,7 @@ import '../pages/home_page_client.dart';
 import '../pages/opinions_page.dart';
 import '../pages/services/services_page.dart';
 import '../pages/shop/shop_page.dart';
+import '../pages/shop/shop_page_mechanic.dart';
 import '../pages/user_page.dart';
 import 'package:http/http.dart' as http;
 import '../classess/session.dart';
@@ -27,21 +28,23 @@ class NavigationDrawerWidget extends StatefulWidget {
 class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   final padding = const EdgeInsets.symmetric(horizontal: 20);
 
-  String name = 'Name';
-  String surname = 'Surname';
-  String phonenumber = 'Phone number';
-  String email = 'Email';
-  String avatar = 'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg';
+  late String name;
+  late String surname;
+  late String phonenumber;
+  late String email;
+  late String avatar;
+  late String role;
+  SharedPreferences? myuserinfo;
 
   fetch() async {
-    final myuserinfo = await SharedPreferences.getInstance();
-
-    name = myuserinfo.getString('name') ?? 'Name';
-    surname = myuserinfo.getString('surname') ?? 'Surname';
-    phonenumber = myuserinfo.getString('phonenumber') ?? 'Phone number';
-    email = myuserinfo.getString('email') ?? 'Email';
-    avatar = myuserinfo.getString('avatar') ??
+    myuserinfo = await SharedPreferences.getInstance();
+    name = myuserinfo?.getString('name') ?? 'Name';
+    surname = myuserinfo?.getString('surname') ?? 'Surname';
+    phonenumber = myuserinfo?.getString('phonenumber') ?? 'Phone number';
+    email = myuserinfo?.getString('email') ?? 'Email';
+    avatar = myuserinfo?.getString('avatar') ??
         'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg';
+    role = myuserinfo?.getString('role') ?? 'C';
 
     setState(() {});
   }
@@ -49,38 +52,31 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => fetch());
+    fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    /*final String name =
-        myuserinfo != null ? myuserinfo?.name ?? 'Name' : 'Name';
-    final String email =
-        myuserinfo != null ? myuserinfo?.email ?? 'Surname' : 'Surname';
-    final String urlImage = myuserinfo != null
-        ? myuserinfo?.avatar ??
-            'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
-        : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
-    */
     return Drawer(
         child: Material(
             color: const Color.fromRGBO(50, 75, 205, 1),
             child: ListView(
               children: <Widget>[
-                buildHeader(
-                  urlImage: avatar,
-                  name: '$name $surname',
-                  email: email,
-                  onClicked: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => UserPage(
-                        name: name,
+                (myuserinfo != null)
+                    ? buildHeader(
                         urlImage: avatar,
-                      ),
-                    ),
-                  ),
-                ),
+                        name: '$name $surname',
+                        email: email,
+                        onClicked: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => UserPage(
+                              name: name,
+                              urlImage: avatar,
+                            ),
+                          ),
+                        ),
+                      )
+                    : const Center(child: CircularProgressIndicator()),
                 Container(
                   padding: padding,
                   child: Column(
@@ -162,10 +158,18 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         ));
         break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShopPage(session: widget.session),
-        ));
-        break;
+        if (role == 'M') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShopPageMechanic(session: widget.session),
+          ));
+          break;
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShopPage(session: widget.session),
+          ));
+          break;
+        }
+
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => OpinionsPage(session: widget.session),

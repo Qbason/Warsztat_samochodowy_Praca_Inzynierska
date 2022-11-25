@@ -112,27 +112,25 @@ class _LoginPageState extends State<LoginPage> {
 
                           //saving my user info to storage
 
-                          final myuserinfo =
+                          final storageinfo =
                               await SharedPreferences.getInstance();
 
-                          await myuserinfo.setString('name', myuserinfo1.name);
-                          await myuserinfo.setString(
+                          await storageinfo.setString('name', myuserinfo1.name);
+                          await storageinfo.setString(
                               'surname', myuserinfo1.surname);
-                          await myuserinfo.setString(
+                          await storageinfo.setString(
                               'phonenumber', myuserinfo1.phonenumber);
-                          await myuserinfo.setString(
+                          await storageinfo.setString(
                               'email', myuserinfo1.email);
-                          await myuserinfo.setString(
+                          await storageinfo.setString(
                               'avatar', myuserinfo1.avatar);
+                          await storageinfo.setString('role', myuserinfo1.role);
 
                           //saving session tokens info to storage
 
-                          final sessionstorage =
-                              await SharedPreferences.getInstance();
-
-                          await sessionstorage.setString(
+                          await storageinfo.setString(
                               'tokenaccess', session.tokenaccess);
-                          await sessionstorage.setString(
+                          await storageinfo.setString(
                               'tokenrefresh', session.tokenrefresh);
 
                           Navigator.of(context).pushAndRemoveUntil(

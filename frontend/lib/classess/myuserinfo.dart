@@ -7,6 +7,7 @@ class Myuserinfo {
   String phonenumber;
   String email;
   String avatar;
+  String role;
 
   Myuserinfo({
     required this.name,
@@ -14,6 +15,7 @@ class Myuserinfo {
     required this.phonenumber,
     required this.email,
     required this.avatar,
+    required this.role,
   });
 
   Myuserinfo copyWith({
@@ -22,6 +24,7 @@ class Myuserinfo {
     String? phonenumber,
     String? email,
     String? avatar,
+    String? role,
   }) {
     return Myuserinfo(
       name: name ?? this.name,
@@ -29,6 +32,7 @@ class Myuserinfo {
       phonenumber: phonenumber ?? this.phonenumber,
       email: email ?? this.email,
       avatar: avatar ?? this.avatar,
+      role: role ?? this.role,
     );
   }
 
@@ -36,9 +40,10 @@ class Myuserinfo {
     return <String, dynamic>{
       'name': name,
       'surname': surname,
-      'phonenumber': phonenumber,
+      'phone_number': phonenumber,
       'email': email,
       'avatar': avatar,
+      'role': role,
     };
   }
 
@@ -49,6 +54,7 @@ class Myuserinfo {
       phonenumber: map['phone_number'] as String,
       email: map['email'] as String,
       avatar: map['avatar'] as String,
+      role: map['role'] as String,
     );
   }
 
@@ -59,7 +65,7 @@ class Myuserinfo {
 
   @override
   String toString() {
-    return 'Myuserinfo(name: $name, surname: $surname, phonenumber: $phonenumber, email: $email, avatar: $avatar)';
+    return 'Myuserinfo(name: $name, surname: $surname, phonenumber: $phonenumber, email: $email, avatar: $avatar, role: $role)';
   }
 
   @override
@@ -70,7 +76,8 @@ class Myuserinfo {
         other.surname == surname &&
         other.phonenumber == phonenumber &&
         other.email == email &&
-        other.avatar == avatar;
+        other.avatar == avatar &&
+        other.role == role;
   }
 
   @override
@@ -79,6 +86,7 @@ class Myuserinfo {
         surname.hashCode ^
         phonenumber.hashCode ^
         email.hashCode ^
-        avatar.hashCode;
+        avatar.hashCode ^
+        role.hashCode;
   }
 }

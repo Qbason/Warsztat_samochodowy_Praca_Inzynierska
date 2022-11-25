@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 class Offers {
+  int pk;
   String title;
   String description;
   String price;
@@ -11,6 +12,7 @@ class Offers {
   int quantity;
 
   Offers({
+    required this.pk,
     required this.title,
     required this.description,
     required this.price,
@@ -21,6 +23,7 @@ class Offers {
   });
 
   Offers copyWith({
+    int? pk,
     String? title,
     String? description,
     String? price,
@@ -30,6 +33,7 @@ class Offers {
     int? quantity,
   }) {
     return Offers(
+      pk: pk ?? this.pk,
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
@@ -42,6 +46,7 @@ class Offers {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'pk': pk,
       'title': title,
       'description': description,
       'price': price,
@@ -54,6 +59,7 @@ class Offers {
 
   factory Offers.fromMap(Map<String, dynamic> map) {
     return Offers(
+      pk: map['pk'] as int,
       title: map['title'] as String,
       description: map['description'] as String,
       price: map['price'] as String,
@@ -71,14 +77,15 @@ class Offers {
 
   @override
   String toString() {
-    return 'Offers(title: $title, description: $description, price: $price, image: $image, datecreated: $datecreated, itembase: $itembase, quantity: $quantity)';
+    return 'Offers(pk: $pk, title: $title, description: $description, price: $price, image: $image, datecreated: $datecreated, itembase: $itembase, quantity: $quantity)';
   }
 
   @override
   bool operator ==(covariant Offers other) {
     if (identical(this, other)) return true;
 
-    return other.title == title &&
+    return other.pk == pk &&
+        other.title == title &&
         other.description == description &&
         other.price == price &&
         other.image == image &&
@@ -89,7 +96,8 @@ class Offers {
 
   @override
   int get hashCode {
-    return title.hashCode ^
+    return pk.hashCode ^
+        title.hashCode ^
         description.hashCode ^
         price.hashCode ^
         image.hashCode ^

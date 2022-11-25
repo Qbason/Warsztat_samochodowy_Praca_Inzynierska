@@ -37,24 +37,28 @@ class Session {
     return false;
   }
 
-  baseget(url) async {
-    final response = await client.get(
-      url,
-      // Send authorization headers to the backend.
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $tokenaccess',
-      },
-    );
+  baserequest(url, method, {body = ''}) async {
+    // Send authorization headers to the backend.
+    var headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: 'Bearer $tokenaccess',
+    };
+    dynamic response;
+    if (method == 'get') {
+      response = await client.get(url, headers: headers);
+    } else if (method == 'post') {
+      response = await client.post(url, headers: headers, body: body);
+    }
     return response;
   }
 
 // refresh everytime using get when token expire(after 5 min)
   get(url) async {
-    var response = await baseget(url);
+    var response = await baserequest(url, 'get');
 
     if (response.statusCode == 401) {
       await refreshToken();
-      response = await baseget(url);
+      response = await baserequest(url, 'get');
     }
 
     return response;
@@ -62,6 +66,16 @@ class Session {
 
 // post function - sending data to database
 
+  post(url, {body = ''}) async {
+    var response = await baserequest(url, 'post', body: body);
+
+    if (response.statusCode == 401) {
+      await refreshToken();
+      response = await baserequest(url, 'post', body: body);
+    }
+
+    return response;
+  }
 // update function - zmiana czegos w bazie(caly wiersz)
 
 // partial update - zmiana poszczegolnych pol nie calego wiersza np. awatara

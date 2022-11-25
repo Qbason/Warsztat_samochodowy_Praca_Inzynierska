@@ -6,7 +6,7 @@ class Itembases {
   String name;
   String condition;
   int category;
-  String price;
+  String? price;
 
   Itembases({
     required this.pk,
@@ -48,7 +48,7 @@ class Itembases {
       name: map['name'] as String,
       condition: map['condition'] as String,
       category: map['category'] as int,
-      price: map['price'] as String,
+      price: map['price'] as String?,
     );
   }
 

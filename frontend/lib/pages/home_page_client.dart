@@ -5,6 +5,7 @@ import 'package:first_project/pages/shop/shop_page.dart';
 import 'package:first_project/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../classess/myuserinfo.dart';
 import '../classess/news.dart';
 import '../classess/offers.dart';
@@ -33,6 +34,12 @@ class _HomePageClientState extends State<HomePageClient> {
   fetchOffers(session) async {
     newestofferslist = await fetchNewestOffers(session);
     setState(() {});
+  }
+
+  late String userrole;
+  fetchuserinfo() async {
+    final myuserinfo = await SharedPreferences.getInstance();
+    userrole = myuserinfo.getString('role') ?? 'C';
   }
 
   @override
@@ -101,6 +108,28 @@ class _HomePageClientState extends State<HomePageClient> {
                 ),
               ],
             ),
+            // Center(
+            //     child: ElevatedButton(
+            //   child: Text('click'),
+            //   onPressed: () {
+            //     showDialog(
+            //         context: context,
+            //         builder: (BuildContext context) => AlertDialog(
+            //               title: Text('aaa'),
+            //               content: Text('aaaa'),
+            //               actions: <Widget>[
+            //                 MaterialButton(
+            //                   elevation: 3.0,
+            //                   child: const Text('Ok'),
+            //                   onPressed: () {
+            //                     print('dziala');
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                 ),
+            //               ],
+            //             ));
+            //   },
+            // ))
           ],
         )
 

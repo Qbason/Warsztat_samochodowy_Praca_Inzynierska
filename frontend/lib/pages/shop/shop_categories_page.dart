@@ -20,17 +20,9 @@ class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
     setState(() {});
   }
 
-  late bool _isLoading;
-
   @override
   void initState() {
-    _isLoading = true;
     fetchCategories1(widget.session);
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
     super.initState();
   }
 

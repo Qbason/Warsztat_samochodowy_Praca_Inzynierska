@@ -1,5 +1,7 @@
 var baseurl = "jakubk.pl:2136";
 
+// GET
+
 Uri geturlCreateToken() {
   String url = "api/token/";
 
@@ -18,8 +20,15 @@ Uri geturlNewestOffers(queryParameters) {
   return Uri.http(baseurl, url, queryParameters);
 }
 
+Uri geturlOffersByTitle(queryParameters) {
+  String url = "/shop/offersearchbytitle/";
+  print(Uri.http(baseurl, url, queryParameters));
+
+  return Uri.http(baseurl, url, queryParameters);
+}
+
 Uri geturlOffers() {
-  String url = "offers/";
+  String url = "offer/";
 
   return Uri.http(baseurl, url);
 }
@@ -47,8 +56,34 @@ Uri geturlItembase(id) {
   return Uri.http(baseurl, url);
 }
 
+Uri geturlitembaseClient(id) {
+  String url = "/shop/itembaseClient/$id";
+
+  return Uri.http(baseurl, url);
+}
+
 Uri geturlCategories() {
   String url = "/shop/category/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlMyReservations() {
+  String url = "/shop/myreservation/";
+
+  return Uri.http(baseurl, url);
+}
+
+// POST
+
+Uri posturlMakeReservation() {
+  String url = "/shop/makereservation/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri posturlCancelReservation() {
+  String url = "/shop/cancelreservation/";
 
   return Uri.http(baseurl, url);
 }
