@@ -86,25 +86,6 @@ class OfferReservationkSerializer(serializers.Serializer):
         #checking if offer exist
         if not offer:
             raise ValidationError("This offer doesn't exist",code=status.HTTP_406_NOT_ACCEPTABLE)
-        
-        #checking if user doesn't have more than 2 rezervation of different products 
-        user = self.context['request'].user
-        number_of_reservation = Item.objects.filter(
-            reservation__client__user=user,
-            reservation__was_taken=False
-        ).aggregate(Count('itembase'))['itembase__count']#distinct().count()
-        print(
-            Item.objects.filter(
-            reservation__client__user=user,
-            reservation__was_taken=False
-        ).annotate(numb=Count('itembase'))
-        )
-        print(
-            number_of_reservation
-        )
-        if number_of_reservation>2:
-            raise ValidationError("User has more than 2 reservation active",code=status.HTTP_406_NOT_ACCEPTABLE)
-
 
         return value
 

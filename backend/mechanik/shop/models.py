@@ -17,11 +17,14 @@ class Reservation(models.Model):
     date_receive = models.DateTimeField(null=True)
     was_taken = models.BooleanField(default=False)
 
+    def __str__(self) -> str:
+        return f'{self.pk}'
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self) -> str:
-        return self.name
+        return f'{self.name}'
 
 
 class ItemBase(models.Model):
@@ -56,7 +59,8 @@ class Item(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.pk} {self.itembase.name} R:{self.reservation}"
+        return f"Pk(item):{self.pk}\nPk(itembase):{self.itembase.pk}\
+    \nName(itembase):{self.itembase.name} Res:{self.reservation}##"
 
 # class CanceledReservation(models.Model):
 #     reservation = models.OneToOneField(Reservation,on_delete=models.CASCADE)

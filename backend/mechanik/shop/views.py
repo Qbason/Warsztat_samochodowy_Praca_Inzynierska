@@ -87,7 +87,7 @@ class MyReservedItems(viewsets.GenericViewSet):
             itembase__item__reservation__was_taken=False,
         ).annotate(reserved_number=Count('itembase'))
 
-        serialized_offer = OfferReservedSerializer(offer,many=True)
+        serialized_offer = OfferReservedSerializer(offer,context={'request':request},many=True)
 
         return Response(serialized_offer.data)
 
@@ -242,6 +242,24 @@ class MakeReservationOffer(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
 
+    def group_by_reserved_items_by_user(self,user):
+        return ItemBase.objects.filter(
+            item__reservation__client__user=user,
+            item__reservation__was_taken=False
+        ).annotate(Count('pk'))
+
+    def check_if_user_has_too_much_different_reservation(self,itembases_filtered_groupby_count,pk_offer):
+        #if user has  more or equal than 2 different reeservation  
+        if itembases_filtered_groupby_count.count()>=2:
+            #the pk of offer->itembase is in grouped elements
+            #if there exists then, we can make this reservation
+            # we can buy more item, we already reserved
+            for itembase in itembases_filtered_groupby_count:
+                if itembase.offer.pk==pk_offer:
+                    return False
+            return True
+
+
     def create(self,request,*args, **kwargs):
 
         serializer = OfferReservationkSerializer(data=request.data,context={'request':request})
@@ -253,10 +271,17 @@ class MakeReservationOffer(viewsets.GenericViewSet):
         pk_offer = serializer.validated_data.get('pk')
         number = int(serializer.validated_data.get('number'))
 
+        #checking if user doesn't have more than 2 rezervation of different products 
+        user = self.request.user
+        itembases_filtered = self.group_by_reserved_items_by_user(user)
+        decision = self.check_if_user_has_too_much_different_reservation(itembases_filtered,pk_offer)
+        #otherwise we can't make order
+        if decision:
+            raise ValidationError({"pk":"User has atleast 2 reservation active"},code=status.HTTP_406_NOT_ACCEPTABLE)
+    
         result = {
             "result":"FAIL"
         }
-
 
         #checking has much items are in database
         avail_items = Item.objects.filter(
