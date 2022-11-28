@@ -122,7 +122,7 @@ class ItemBaseViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 
     
 class OfferByCategory(viewsets.GenericViewSet,mixins.ListModelMixin):
