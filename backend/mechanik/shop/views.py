@@ -122,12 +122,17 @@ class ItemBaseViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated,IsMechanicPermission]
+
+class CategoryClientViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
 
     
 class OfferByCategory(viewsets.GenericViewSet,mixins.ListModelMixin):
     queryset = Offer.objects.all()
-    serializer_class = OfferSerializer
+    serializer_class = OfferNoHideSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

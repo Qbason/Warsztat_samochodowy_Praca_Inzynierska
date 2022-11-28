@@ -30,6 +30,11 @@ router.register(
     basename='category'
 )
 router.register(
+    r'categoryClient',
+    views.CategoryClientViewSet,
+    basename='categoryClient'
+)
+router.register(
     r'reservation',
     views.ReservationViewSet,
     basename='reservation'
