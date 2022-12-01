@@ -11,20 +11,52 @@ router.register(
     basename="carmodel"
 )
 router.register(
+    r'modelClient',
+    views.CarModelClientViewSet,
+    basename="carmodelClient"
+)
+
+
+##########
+router.register(
     r'brand',
     views.CarBrandViewSet,
     basename="carbrand"
 )
+
+router.register(
+    r'brandClient',
+    views.CarBrandClientViewSet,
+    basename="carbrandClient"
+)
+
+############3
 router.register(
     r'brandmodel',
     views.CarBrandModelViewSet,
     basename="brandmodel"
 )
 router.register(
+    r'brandmodelClient',
+    views.CarBrandModelClientViewSet,
+    basename="brandmodelClient"
+)
+
+############3
+router.register(
     r'type',
     views.CarTypeViewSet,
     basename="type"
 )
+
+router.register(
+    r'typeClient',
+    views.CarTypeClientViewSet,
+    basename="typeClient"
+)
+
+###############
+
 router.register(
     r'car',
     views.CarViewSet,
