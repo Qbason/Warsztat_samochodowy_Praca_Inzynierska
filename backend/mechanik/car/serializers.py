@@ -6,7 +6,7 @@ from car.models import Car,CarType,CarModel,CarBrand,CarBrandModel
 
 class CarSerializer(ModelSerializer):
 
-    owner = ReadOnlyField(source='owner.username')
+    # owner = ReadOnlyField(source='owner.username')
     class Meta:
         model = Car
         fields = '__all__'
@@ -28,6 +28,7 @@ class CarBrandSerializer(ModelSerializer):
     class Meta:
         model = CarBrand
         fields = '__all__'
+
 class CarBrandModelSerializer(ModelSerializer):
 
     class Meta:
