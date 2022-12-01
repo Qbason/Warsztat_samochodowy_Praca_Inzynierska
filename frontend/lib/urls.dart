@@ -22,7 +22,12 @@ Uri geturlNewestOffers(queryParameters) {
 
 Uri geturlOffersByTitle(queryParameters) {
   String url = "/shop/offersearchbytitle/";
-  print(Uri.http(baseurl, url, queryParameters));
+
+  return Uri.http(baseurl, url, queryParameters);
+}
+
+Uri geturlOffersByCategory(queryParameters) {
+  String url = "/shop/offerbycategory/";
 
   return Uri.http(baseurl, url, queryParameters);
 }
@@ -62,14 +67,20 @@ Uri geturlitembaseClient(id) {
   return Uri.http(baseurl, url);
 }
 
-Uri geturlCategories() {
-  String url = "/shop/category/";
+Uri geturlCategoriesClient() {
+  String url = "/shop/categoryClient/";
 
   return Uri.http(baseurl, url);
 }
 
 Uri geturlMyReservations() {
   String url = "/shop/myreservation/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlMyCars() {
+  String url = "/car/mycars/";
 
   return Uri.http(baseurl, url);
 }

@@ -62,7 +62,11 @@ class _ShopOfferPageState extends State<ShopOfferPage> {
             children: [
               Row(
                 children: [
-                  Image.network(widget.offer.image, width: 50, height: 50),
+                  Image.network(
+                      widget.offer.image ??
+                          'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg',
+                      width: 50,
+                      height: 50),
                   Column(
                     children: [
                       Text(widget.offer.title),

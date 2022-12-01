@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../classess/mycars.dart';
+import '../../fetchdata/fetchfunctionsservices.dart';
 import '../../widgets/navigation_drawer_widget.dart';
 import '../../classess/session.dart';
 
@@ -12,6 +14,18 @@ class ServicesCarsPage extends StatefulWidget {
 }
 
 class _ServicesCarsPageState extends State<ServicesCarsPage> {
+  List<Mycars> mycarslist = [];
+  fetchMyCars1(session) async {
+    mycarslist = await fetchMyCars(session);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMyCars1(widget.session);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +35,24 @@ class _ServicesCarsPageState extends State<ServicesCarsPage> {
         title: const Text('Moje auta'),
         centerTitle: true,
       ),
-      body: const Text('Auto 1'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: 500,
+            child: ListView.builder(
+              itemCount: mycarslist.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(mycarslist[index].NrVIN),
+                  leading: Image.network(mycarslist[index].photo ??
+                      'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
+                  onTap: () {},
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

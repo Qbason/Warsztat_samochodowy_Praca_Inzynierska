@@ -63,8 +63,11 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
             children: [
               Row(
                 children: [
-                  Image.network(widget.myreservation.image,
-                      width: 50, height: 50),
+                  Image.network(
+                      widget.myreservation.image ??
+                          'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg',
+                      width: 50,
+                      height: 50),
                   Column(
                     children: [
                       Text(widget.myreservation.title),

@@ -1,3 +1,4 @@
+import 'package:first_project/pages/shop/shop_offer_by_category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../classess/categories.dart';
@@ -16,7 +17,7 @@ class ShopCategoriesPage extends StatefulWidget {
 class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
   List<Categories> categorieslist = [];
   fetchCategories1(session) async {
-    categorieslist = await fetchCategories(session);
+    categorieslist = await fetchCategoriesClient(session);
     setState(() {});
   }
 
@@ -43,8 +44,15 @@ class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(categorieslist[index].name),
-                leading: Text('PK: ${categorieslist[index].pk}'),
-                onTap: () {},
+                //leading: Text('PK: ${categorieslist[index].pk}'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ShopOfferByCategoryPage(
+                      session: widget.session,
+                      category: categorieslist[index],
+                    ),
+                  ));
+                },
               );
             },
           ),

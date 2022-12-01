@@ -7,7 +7,7 @@ class Myreservations {
   String title;
   String description;
   String price;
-  String image;
+  String? image;
   String datecreated;
   int reservednumber;
   Myreservations({
@@ -63,7 +63,7 @@ class Myreservations {
       title: map['title'] as String,
       description: map['description'] as String,
       price: map['price'] as String,
-      image: map['image'] as String,
+      image: map['image'] as String?,
       datecreated: map['date_created'] as String,
       reservednumber: map['reserved_number'] as int,
     );

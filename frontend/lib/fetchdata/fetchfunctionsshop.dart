@@ -80,6 +80,30 @@ fetchOffersByTitle(session, title) async {
   }
 }
 
+fetchOffersByCategory(session, category) async {
+  List<Offers> responseOffersByCategory = [];
+  final queryParameters = {
+    'pk': '$category', // how many offers it should show
+  };
+  final response = await session.get(geturlOffersByCategory(queryParameters));
+
+  print(response.statusCode);
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    final responseOffers = jsonDecode(utf8.decode(response.bodyBytes));
+    responseOffers['results'].forEach((element) {
+      responseOffersByCategory.add(Offers.fromMap(element));
+    });
+    return responseOffersByCategory;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Newest Offers');
+  }
+}
+
 fetchItembaseClient(session, int id) async {
   Itembases itembase;
   final response = await session.get(geturlitembaseClient(id));
@@ -101,9 +125,9 @@ fetchItembaseClient(session, int id) async {
   }
 }
 
-fetchCategories(session) async {
+fetchCategoriesClient(session) async {
   List<Categories> responseCategories = [];
-  final response = await session.get(geturlCategories());
+  final response = await session.get(geturlCategoriesClient());
 
   print(response.statusCode);
 

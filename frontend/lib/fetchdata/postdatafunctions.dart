@@ -33,9 +33,9 @@ postmakeReservation(session, pk, number) async {
         '${data['pk'][0]}.\n${data['number'][0]}'
       ];
     } else if (checkpk) {
-      return ['Kod błędu: ${response.statusCode}', '${data['pk'][0]}'];
+      return ['Kod błędu: ${response.statusCode}', '${data['pk'][0]}.'];
     } else if (checknumber) {
-      return ['Kod błędu: ${response.statusCode}', '${data['number'][0]}'];
+      return ['Kod błędu: ${response.statusCode}', '${data['number'][0]}.'];
     } else {
       return ['Kod błędu: ${response.statusCode}', '${data['info']}.'];
     }

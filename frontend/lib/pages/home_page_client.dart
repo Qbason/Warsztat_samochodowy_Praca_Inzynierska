@@ -92,7 +92,9 @@ class _HomePageClientState extends State<HomePageClient> {
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(newestofferslist[index].title),
-                          leading: Image.network(newestofferslist[index].image),
+                          leading: Image.network(newestofferslist[index]
+                                  .image ??
+                              'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ShopOfferPage(

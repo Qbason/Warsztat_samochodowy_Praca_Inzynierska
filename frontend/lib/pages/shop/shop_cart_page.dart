@@ -52,7 +52,8 @@ class _ShopCartPageState extends State<ShopCartPage> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(myreservationslist[index].title),
-                      leading: Image.network(myreservationslist[index].image),
+                      leading: Image.network(myreservationslist[index].image ??
+                          'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ShopCartMyReservationPage(

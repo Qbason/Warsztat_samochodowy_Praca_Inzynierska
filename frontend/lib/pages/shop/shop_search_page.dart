@@ -88,7 +88,8 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(offersbytitlelist[index].title),
-                        leading: Image.network(offersbytitlelist[index].image),
+                        leading: Image.network(offersbytitlelist[index].image ??
+                            'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ShopOfferPage(

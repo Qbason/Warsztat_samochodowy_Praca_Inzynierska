@@ -6,7 +6,7 @@ class Offers {
   String title;
   String description;
   String price;
-  String image;
+  String? image;
   String datecreated;
   int itembase;
   int quantity;
@@ -63,7 +63,7 @@ class Offers {
       title: map['title'] as String,
       description: map['description'] as String,
       price: map['price'] as String,
-      image: map['image'] as String,
+      image: map['image'] as String?,
       datecreated: map['date_created'] as String,
       itembase: map['itembase'] as int,
       quantity: map['quantity'] as int,
