@@ -39,7 +39,7 @@ class CarBrandViewSet(viewsets.ModelViewSet):
 
 class CarBrandClientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CarBrandSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
 
