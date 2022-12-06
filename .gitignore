@@ -59,3 +59,4 @@ backend/mechanik/db.sqlite3
 test.py
 backend/mechanik/static/
 backend/mechanik/kalendarz/migrations/
+.Trash-1000/
