@@ -1,7 +1,6 @@
 
 from car.models import CarModel,CarBrand,CarBrandModel,CarType,Car
-from car.serializers import CarModelSerializer, CarBrandSerializer,\
-    CarBrandModelSerializer, CarTypeSerializer, CarSerializer
+from car.serializers import *
 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -107,7 +106,7 @@ class CarViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
 class MyCarsViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = CarSerializer
+    serializer_class = CarClientSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

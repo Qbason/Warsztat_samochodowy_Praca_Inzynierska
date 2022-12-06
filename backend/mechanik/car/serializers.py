@@ -17,6 +17,19 @@ class CarSerializer(ModelSerializer):
             "photo"
         ]
 
+class CarClientSerializer(ModelSerializer):
+
+    class Meta:
+        model = Car
+        fields = [
+            "pk",
+            "Nr_VIN",
+            "carbrandmodel",
+            "cartype",
+            "photo"
+        ]
+        depth=2
+
 class CarTypeSerializer(ModelSerializer):
 
     class Meta:
