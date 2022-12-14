@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from userinfo.models import UserInfo
-
+from rest_framework.exceptions import ValidationError
 
 upload_to = settings.STATIC_URL[1:]
 
@@ -41,6 +41,19 @@ class ItemBase(models.Model):
     )
     #purchase price (mechanic)
     price = models.DecimalField(max_digits=8,decimal_places=2)
+
+    def clean(self) -> None:
+        
+        if (ItemBase.objects.filter(condition=self.condition,name=self.name).count()>0):
+            raise ValidationError(
+                {'name':"This name and condition type already exist in database"}
+            )
+
+
+    def save(self, *args, **kwargs) -> None:
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
 
     def __str__(self) -> str:
         return self.name

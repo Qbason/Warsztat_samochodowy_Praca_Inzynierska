@@ -320,3 +320,24 @@ class MakeReservationOffer(viewsets.GenericViewSet):
         return Response(
             result
         )
+
+
+class AddNewProduct(viewsets.GenericViewSet):
+    """
+    Adding new ItemBase and number of products
+    """
+    serializer_class = AddNewItemBaseAndQuantity
+
+    def create(self,request,*args, **kwargs):
+
+        serializer = AddNewItemBaseAndQuantity(data=request.data,context={'request':request})
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer.save()
+
+
+        return Response(serializer.data)

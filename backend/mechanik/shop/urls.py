@@ -70,6 +70,11 @@ router.register(
     views.OfferSearchByTitleViewSet,
     basename='offersearchbytitle'
 )
+router.register(
+    r'addnewproduct',
+    views.AddNewProduct,
+    basename='addnewproduct'
+)
 
 
 

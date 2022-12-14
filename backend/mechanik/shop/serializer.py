@@ -1,6 +1,7 @@
 
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from rest_framework import serializers
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from django.db.models import Count
@@ -157,3 +158,24 @@ class OfferReservedSerializer(ModelSerializer):
             'date_created',
         ]
 
+
+class AddNewItemBaseAndQuantity(serializers.ModelSerializer):
+
+    quantity = serializers.IntegerField(min_value=1,write_only=True)
+
+    class Meta:
+        model = ItemBase
+        fields = ['pk','name','condition','category','price','quantity']
+
+    def create(self, validated_data):
+
+        quantity = validated_data.pop('quantity')
+
+        itembase = ItemBase.objects.create(**validated_data)
+
+        for i in range(0,quantity):
+
+            Item.objects.create(itembase=itembase,reservation=None)
+
+
+        return itembase
