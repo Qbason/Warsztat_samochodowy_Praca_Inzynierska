@@ -1,8 +1,8 @@
 import 'package:first_project/pages/shop/shop_cart_page.dart';
 import 'package:first_project/pages/shop/shop_categories_page.dart';
-import 'package:first_project/pages/shop/shop_edit_page.dart';
 import 'package:first_project/pages/shop/shop_home_page.dart';
 import 'package:first_project/pages/shop/shop_search_page.dart';
+import 'package:first_project/pages/shop/shopediting/shop_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../widgets/navigation_drawer_widget.dart';

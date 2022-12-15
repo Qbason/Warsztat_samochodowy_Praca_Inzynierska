@@ -17,7 +17,7 @@ class _OpinionsPageState extends State<OpinionsPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Opinie'),
         centerTitle: true,
       ),

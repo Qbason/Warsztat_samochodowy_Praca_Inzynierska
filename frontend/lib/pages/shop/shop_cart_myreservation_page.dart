@@ -3,7 +3,7 @@ import 'package:first_project/fetchdata/fetchfunctionsshop.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../classess/itembases.dart';
-import '../../fetchdata/postdatafunctions.dart';
+import '../../fetchdata/postdatafunctionsshop.dart';
 import '../../widgets/navigation_drawer_widget.dart';
 import '../../classess/session.dart';
 
@@ -53,7 +53,7 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Zarezerwowany produkt'),
         centerTitle: true,
       ),
@@ -65,7 +65,7 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
                 children: [
                   Image.network(
                       widget.myreservation.image ??
-                          'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg',
+                          'http://jakubk.pl:2136/static/brakzdjecia.png',
                       width: 50,
                       height: 50),
                   Column(

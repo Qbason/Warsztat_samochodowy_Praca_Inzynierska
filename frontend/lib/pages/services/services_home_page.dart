@@ -17,7 +17,7 @@ class _ServicesHomePageState extends State<ServicesHomePage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Usługi'),
         centerTitle: true,
       ),

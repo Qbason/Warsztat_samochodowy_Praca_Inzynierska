@@ -2,58 +2,58 @@
 import 'dart:convert';
 
 class Mycars {
-  int id;
-  String NrVIN;
-  String photo;
-  int carbrandmodel;
-  int cartype;
-  int owner;
+  int pk;
+  String nrVIN;
+  String? photo;
+  String carbrand;
+  String carmodel;
+  String cartype;
   Mycars({
-    required this.id,
-    required this.NrVIN,
+    required this.pk,
+    required this.nrVIN,
     required this.photo,
-    required this.carbrandmodel,
+    required this.carbrand,
+    required this.carmodel,
     required this.cartype,
-    required this.owner,
   });
 
   Mycars copyWith({
-    int? id,
-    String? NrVIN,
+    int? pk,
+    String? nrVIN,
     String? photo,
-    int? carbrandmodel,
-    int? cartype,
-    int? owner,
+    String? carbrand,
+    String? carmodel,
+    String? cartype,
   }) {
     return Mycars(
-      id: id ?? this.id,
-      NrVIN: NrVIN ?? this.NrVIN,
+      pk: pk ?? this.pk,
+      nrVIN: nrVIN ?? this.nrVIN,
       photo: photo ?? this.photo,
-      carbrandmodel: carbrandmodel ?? this.carbrandmodel,
+      carbrand: carbrand ?? this.carbrand,
+      carmodel: carmodel ?? this.carmodel,
       cartype: cartype ?? this.cartype,
-      owner: owner ?? this.owner,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'NrVIN': NrVIN,
+      'pk': pk,
+      'NrVIN': nrVIN,
       'photo': photo,
-      'carbrandmodel': carbrandmodel,
+      'carbrand': carbrand,
+      'carmodel': carmodel,
       'cartype': cartype,
-      'owner': owner,
     };
   }
 
   factory Mycars.fromMap(Map<String, dynamic> map) {
     return Mycars(
-      id: map['id'] as int,
-      NrVIN: map['Nr_VIN'] as String,
-      photo: map['photo'] as String,
-      carbrandmodel: map['carbrandmodel'] as int,
-      cartype: map['cartype'] as int,
-      owner: map['owner'] as int,
+      pk: map['pk'] as int,
+      nrVIN: map['Nr_VIN'] as String,
+      photo: map['photo'] != null ? map['photo'] as String : null,
+      carbrand: map['carbrandmodel']['carbrand']['brand'] as String,
+      carmodel: map['carbrandmodel']['carmodel']['model'] as String,
+      cartype: map['cartype']['type'] as String,
     );
   }
 
@@ -64,28 +64,28 @@ class Mycars {
 
   @override
   String toString() {
-    return 'Mycars(id: $id, NrVIN: $NrVIN, photo: $photo, carbrandmodel: $carbrandmodel, cartype: $cartype, owner: $owner)';
+    return 'Mycars(pk: $pk, nrVIN: $nrVIN, photo: $photo, carbrand: $carbrand, carmodel: $carmodel, cartype: $cartype)';
   }
 
   @override
   bool operator ==(covariant Mycars other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.NrVIN == NrVIN &&
+    return other.pk == pk &&
+        other.nrVIN == nrVIN &&
         other.photo == photo &&
-        other.carbrandmodel == carbrandmodel &&
-        other.cartype == cartype &&
-        other.owner == owner;
+        other.carbrand == carbrand &&
+        other.carmodel == carmodel &&
+        other.cartype == cartype;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        NrVIN.hashCode ^
+    return pk.hashCode ^
+        nrVIN.hashCode ^
         photo.hashCode ^
-        carbrandmodel.hashCode ^
-        cartype.hashCode ^
-        owner.hashCode;
+        carbrand.hashCode ^
+        carmodel.hashCode ^
+        cartype.hashCode;
   }
 }

@@ -32,19 +32,23 @@ class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Kategorie'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: 500,
-          child: ListView.builder(
+          child: ListView.separated(
             itemCount: categorieslist.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(categorieslist[index].name),
-                //leading: Text('PK: ${categorieslist[index].pk}'),
+                title: Text(
+                  categorieslist[index].name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ShopOfferByCategoryPage(
@@ -55,6 +59,10 @@ class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
                 },
               );
             },
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(
+              height: 10,
+            ),
           ),
         ),
       ),

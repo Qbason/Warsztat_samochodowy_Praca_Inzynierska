@@ -51,8 +51,8 @@ class Myreservations {
       'description': description,
       'price': price,
       'image': image,
-      'datecreated': datecreated,
-      'reservednumber': reservednumber,
+      'date_created': datecreated,
+      'reserved_number': reservednumber,
     };
   }
 
@@ -63,7 +63,7 @@ class Myreservations {
       title: map['title'] as String,
       description: map['description'] as String,
       price: map['price'] as String,
-      image: map['image'] as String?,
+      image: map['image'] != null ? map['image'] as String : null,
       datecreated: map['date_created'] as String,
       reservednumber: map['reserved_number'] as int,
     );

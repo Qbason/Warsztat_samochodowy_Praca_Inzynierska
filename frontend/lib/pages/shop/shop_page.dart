@@ -28,21 +28,40 @@ class _ShopPageState extends State<ShopPage> {
     ];
     return Scaffold(
       body: pages[currentPage],
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
-          NavigationDestination(
-              icon: Icon(Icons.category_sharp), label: 'Categories'),
-          NavigationDestination(
-              icon: Icon(Icons.shopping_cart_sharp), label: 'Cart'),
-        ],
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
-        },
-        selectedIndex: currentPage,
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+            indicatorColor: Colors.white.withOpacity(0.25),
+            labelTextStyle: MaterialStateProperty.all(const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ))),
+        child: NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          backgroundColor: Colors.deepPurple,
+          destinations: const [
+            NavigationDestination(
+                icon: Icon(Icons.home, color: Colors.white), label: 'Home'),
+            NavigationDestination(
+                icon: Icon(Icons.search, color: Colors.white), label: 'Search'),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.category_sharp,
+                  color: Colors.white,
+                ),
+                label: 'Categories'),
+            NavigationDestination(
+              icon: Icon(Icons.shopping_cart_sharp, color: Colors.white),
+              label: 'Cart',
+            ),
+          ],
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPage = index;
+            });
+          },
+          selectedIndex: currentPage,
+        ),
       ),
     );
   }

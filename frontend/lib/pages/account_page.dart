@@ -17,7 +17,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Konto'),
         centerTitle: true,
       ),

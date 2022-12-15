@@ -43,7 +43,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
     phonenumber = myuserinfo?.getString('phonenumber') ?? 'Phone number';
     email = myuserinfo?.getString('email') ?? 'Email';
     avatar = myuserinfo?.getString('avatar') ??
-        'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg';
+        'http://jakubk.pl:2136/static/brakzdjecia.png';
     role = myuserinfo?.getString('role') ?? 'C';
 
     setState(() {});
@@ -59,70 +59,75 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   Widget build(BuildContext context) {
     return Drawer(
         child: Material(
-            color: const Color.fromRGBO(50, 75, 205, 1),
-            child: ListView(
-              children: <Widget>[
-                (myuserinfo != null)
-                    ? buildHeader(
-                        urlImage: avatar,
-                        name: '$name $surname',
-                        email: email,
-                        onClicked: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => UserPage(
-                              name: name,
-                              urlImage: avatar,
+            color: Colors.deepPurple,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: ListView(
+                  children: <Widget>[
+                    (myuserinfo != null)
+                        ? buildHeader(
+                            urlImage: avatar,
+                            name: '$name $surname',
+                            email: email,
+                            onClicked: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => UserPage(
+                                  name: name,
+                                  urlImage: avatar,
+                                ),
+                              ),
                             ),
+                          )
+                        : const Center(child: CircularProgressIndicator()),
+                    Container(
+                      padding: padding,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Główna',
+                            icon: Icons.home,
+                            onClicked: () => selectedItem(context, 0),
                           ),
-                        ),
-                      )
-                    : const Center(child: CircularProgressIndicator()),
-                Container(
-                  padding: padding,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Główna',
-                        icon: Icons.home,
-                        onClicked: () => selectedItem(context, 0),
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Usługi',
+                            icon: Icons.design_services,
+                            onClicked: () => selectedItem(context, 1),
+                          ),
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Sklep',
+                            icon: Icons.shopping_cart,
+                            onClicked: () => selectedItem(context, 2),
+                          ),
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Opinie',
+                            icon: Icons.comment,
+                            onClicked: () => selectedItem(context, 3),
+                          ),
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Konto',
+                            icon: Icons.person,
+                            onClicked: () => selectedItem(context, 4),
+                          ),
+                          const SizedBox(height: 8),
+                          const Divider(color: Colors.white70),
+                          const SizedBox(height: 8),
+                          buildMenuItem(
+                            text: 'Wyloguj',
+                            icon: Icons.logout,
+                            onClicked: () => selectedItem(context, 5),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Usługi',
-                        icon: Icons.design_services,
-                        onClicked: () => selectedItem(context, 1),
-                      ),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Sklep',
-                        icon: Icons.shopping_cart,
-                        onClicked: () => selectedItem(context, 2),
-                      ),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Opinie',
-                        icon: Icons.comment,
-                        onClicked: () => selectedItem(context, 3),
-                      ),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Konto',
-                        icon: Icons.person,
-                        onClicked: () => selectedItem(context, 4),
-                      ),
-                      const SizedBox(height: 8),
-                      const Divider(color: Colors.white70),
-                      const SizedBox(height: 8),
-                      buildMenuItem(
-                        text: 'Wyloguj',
-                        icon: Icons.logout,
-                        onClicked: () => selectedItem(context, 5),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                    )
+                  ],
+                ),
+              ),
             )));
   }
 
@@ -183,7 +188,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       case 5:
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => RootPage(),
+              builder: (context) => const RootPage(),
             ),
             (route) => false);
         break;
@@ -214,7 +219,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                   const SizedBox(height: 4),
                   Text(
                     email,
-                    style: const TextStyle(fontSize: 14, color: Colors.white),
+                    style: const TextStyle(fontSize: 13, color: Colors.white),
                   ),
                 ],
               ),

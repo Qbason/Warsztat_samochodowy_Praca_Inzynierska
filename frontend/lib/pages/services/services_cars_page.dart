@@ -1,3 +1,4 @@
+import 'package:first_project/pages/services/services_cardetails_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../classess/mycars.dart';
@@ -31,7 +32,7 @@ class _ServicesCarsPageState extends State<ServicesCarsPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Moje auta'),
         centerTitle: true,
       ),
@@ -43,10 +44,17 @@ class _ServicesCarsPageState extends State<ServicesCarsPage> {
               itemCount: mycarslist.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(mycarslist[index].NrVIN),
+                  title: Text(mycarslist[index].nrVIN),
                   leading: Image.network(mycarslist[index].photo ??
-                      'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
-                  onTap: () {},
+                      'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ServicesCarDetailsPage(
+                        session: widget.session,
+                        mycar: mycarslist[index],
+                      ),
+                    ));
+                  },
                 );
               },
             ),

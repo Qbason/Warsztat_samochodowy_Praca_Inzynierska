@@ -17,7 +17,7 @@ class _ServicesHistoryPageState extends State<ServicesHistoryPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Historia napraw'),
         centerTitle: true,
       ),

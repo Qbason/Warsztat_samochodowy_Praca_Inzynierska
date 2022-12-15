@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../classess/itembases.dart';
 import '../../classess/offers.dart';
-import '../../fetchdata/postdatafunctions.dart';
+import '../../fetchdata/postdatafunctionsshop.dart';
 import '../../widgets/navigation_drawer_widget.dart';
 import '../../classess/session.dart';
 import '../../fetchdata/fetchfunctionsshop.dart';
@@ -36,45 +36,52 @@ class _ShopOfferByCategoryPageState extends State<ShopOfferByCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text('Sklep'),
+        backgroundColor: Colors.deepPurple,
+        title: Text(widget.category.name),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Text('Kategoria: ${widget.category.name}',
-                style: (const TextStyle(
-                  fontSize: 30,
-                ))),
-            const SizedBox(height: 20),
-            SingleChildScrollView(
-              child: SizedBox(
-                height: 500,
-                child: ListView.builder(
-                  itemCount: offersbycategorylist.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(offersbycategorylist[index].title),
-                      leading: Image.network(offersbycategorylist[index]
-                              .image ??
-                          'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ShopOfferPage(
-                            session: widget.session,
-                            offer: offersbycategorylist[index],
-                          ),
-                        ));
-                      },
-                    );
-                  },
-                ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+            child: SizedBox(
+              height: 500,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    fetchOffersByCategory1(widget.session, widget.category.pk);
+                  });
+                },
+                child: ListView.separated(
+                    itemCount: offersbycategorylist.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(offersbycategorylist[index].title),
+                        leading: Image.network(
+                            offersbycategorylist[index].image ??
+                                'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                        onTap: () async {
+                          await Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ShopOfferPage(
+                              session: widget.session,
+                              offer: offersbycategorylist[index],
+                            ),
+                          ));
+                          setState(() {
+                            fetchOffersByCategory1(
+                                widget.session, widget.category.pk);
+                          });
+                        },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                          height: 10,
+                        )),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -55,7 +55,7 @@ class _HomePageClientState extends State<HomePageClient> {
         backgroundColor: Colors.grey[300],
         drawer: NavigationDrawerWidget(session: widget.session),
         appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.deepPurple,
           title: const Text('Mechanika Samochodowa'),
           centerTitle: true,
         ),
@@ -68,14 +68,19 @@ class _HomePageClientState extends State<HomePageClient> {
                 SingleChildScrollView(
                   child: SizedBox(
                     height: 200,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: newestnewslist.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(newestnewslist[index].title),
-                          leading: Image.network(newestnewslist[index].image),
+                          leading: Image.network(newestnewslist[index].image ??
+                              'http://jakubk.pl:2136/static/brakzdjecia.png'),
                         );
                       },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        height: 10,
+                      ),
                     ),
                   ),
                 ),
@@ -87,14 +92,14 @@ class _HomePageClientState extends State<HomePageClient> {
                 SingleChildScrollView(
                   child: SizedBox(
                     height: 200,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: newestofferslist.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(newestofferslist[index].title),
                           leading: Image.network(newestofferslist[index]
                                   .image ??
-                              'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
+                              'http://jakubk.pl:2136/static/brakzdjecia.png'),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ShopOfferPage(
@@ -105,6 +110,10 @@ class _HomePageClientState extends State<HomePageClient> {
                           },
                         );
                       },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        height: 10,
+                      ),
                     ),
                   ),
                 ),

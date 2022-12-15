@@ -22,6 +22,23 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
     setState(() {});
   }
 
+  createAlertDialog() => showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            title: const Text('Błąd!'),
+            content: const Text(
+                'Pole wyszukiwanej frazy w tytule nie może być puste!!!'),
+            actions: <Widget>[
+              MaterialButton(
+                elevation: 3.0,
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ));
+
   @override
   void initState() {
     super.initState();
@@ -30,80 +47,100 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 180,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(color: Colors.white),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
                 child: TextField(
                   controller: controllersearch,
                   maxLines: 1,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: GestureDetector(
-                onTap: () async {
-                  await fetchOffersByTitle1(
-                      widget.session, controllersearch.text);
-                  setState(() {});
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrange,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.search),
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Szukaj...',
+                    hintStyle: TextStyle(fontSize: 18, color: Colors.white),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                 ),
               ),
             ),
+            Expanded(
+                flex: 1,
+                child: TextButton.icon(
+                    onPressed: () async {
+                      if (controllersearch.text == '') {
+                        createAlertDialog();
+                      }
+                      await fetchOffersByTitle1(
+                          widget.session, controllersearch.text);
+                      controllersearch.text = '';
+                      //hiding keyboard
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text(''),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 5.0),
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                    ))),
           ],
         ),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Center(
-              child: Text('Szukane produkty:',
-                  style: (TextStyle(
-                    fontSize: 30,
-                  ))),
-            ),
-            const SizedBox(height: 20),
-            if (offersbytitlelist.isNotEmpty)
-              SingleChildScrollView(
-                child: SizedBox(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Center(
+                child: Text('Szukane produkty:',
+                    style: (TextStyle(
+                      fontSize: 30,
+                    ))),
+              ),
+              const SizedBox(height: 20),
+              if (offersbytitlelist.isNotEmpty)
+                SizedBox(
                   height: 500,
-                  child: ListView.builder(
+                  child: ListView.separated(
                     itemCount: offersbytitlelist.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(offersbytitlelist[index].title),
                         leading: Image.network(offersbytitlelist[index].image ??
-                            'http://jakubk.pl:2136/static/choinka_kHOqrRj.jpg'),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                            'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                        onTap: () async {
+                          await Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ShopOfferPage(
                               session: widget.session,
                               offer: offersbytitlelist[index],
                             ),
                           ));
+                          setState(() {
+                            fetchOffersByTitle1(
+                                widget.session, controllersearch.text);
+                          });
                         },
                       );
                     },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 10,
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

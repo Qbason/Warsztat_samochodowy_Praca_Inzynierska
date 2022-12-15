@@ -17,7 +17,7 @@ class _ServicesCalendarPageState extends State<ServicesCalendarPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.deepPurple,
         title: const Text('Planowane wizyty'),
         centerTitle: true,
       ),

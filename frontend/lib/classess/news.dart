@@ -4,7 +4,7 @@ import 'dart:convert';
 class News {
   String title;
   String content;
-  String image;
+  String? image;
   String datecreated;
   News({
     required this.title,
@@ -40,7 +40,7 @@ class News {
     return News(
       title: map['title'] as String,
       content: map['content'] as String,
-      image: map['image'] as String,
+      image: map['image'] != null ? map['image'] as String : null,
       datecreated: map['date_created'] as String,
     );
   }
