@@ -4,13 +4,17 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(
-    r'',
+    r'info',
     views.UserInfoViewSet,
     basename="info"
+)
+router.register(
+    r'my',
+    views.MyUserInfo,
+    basename="my"
 )
 
 
 urlpatterns = [
-    path('my/',views.MyUserInfo.as_view()),
     path('', include(router.urls)),
 ]

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.validators import ValidationError
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import mixins
 from userinfo.models import UserInfo
 from userinfo.serializer import UserInfoSerializer
 
@@ -23,9 +23,12 @@ class UserInfoViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class MyUserInfo(generics.GenericAPIView):
+class MyUserInfo(viewsets.GenericViewSet):
     """
     Show info about logged in user
+    description:
+        Return info about logged in user like: name, surname,
+        phone_number, email, avatar
     """
 
 
@@ -43,19 +46,12 @@ class MyUserInfo(generics.GenericAPIView):
         
         return userinfo
 
-    def get(self,*args, **kwargs):
-        """
-        description:
-        Return info about logged in user like: name, surname,
-        phone_number, email, avatar
-        :description
-        """
+    def list(self,*args, **kwargs):
         userinfo = self.get_queryset()
         serializered_userinfo = self.get_serializer(userinfo,many=False)
 
         return Response(serializered_userinfo.data)
 
-    schema = MyOwnSchema(get.__doc__)
 
 
 
