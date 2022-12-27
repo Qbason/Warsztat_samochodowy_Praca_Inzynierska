@@ -6,6 +6,7 @@ from basetools.schema import MyOwnSchema
 from basetools.validator import validate_int
 from basetools.custompermissions import IsMechanicPermission
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import mixins
 
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
@@ -13,8 +14,17 @@ class NewsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsMechanicPermission]
 
 
-class TheNewestNews(generics.ListAPIView):
+class TheNewestNews(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """
+    description:
+        Return a list of news
+        Length list is equal to "count" parameter
+        News: title:str, content:str, image:str, date_created:datatime
+    query:
+        - count<->required<->
+        - page<->
 
+    """
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
@@ -27,21 +37,3 @@ class TheNewestNews(generics.ListAPIView):
         queryset = self.queryset[:count]
 
         return queryset
-
-    def get(self,*args, **kwargs):
-        """
-        description:
-            Return a list of news
-            Length list is equal to "count" parameter
-            News: title:str, content:str, image:str, date_created:datatime
-        :description
-        query:
-            - count<->required<->
-            - page<->
-        :query
-        """
-        
-
-        return super().get(*args,**kwargs)
-
-    schema = MyOwnSchema(description=get.__doc__,)

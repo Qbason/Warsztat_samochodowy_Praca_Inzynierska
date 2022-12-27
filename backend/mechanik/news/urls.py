@@ -3,14 +3,19 @@ from rest_framework.routers import DefaultRouter
 from news import views
 
 router = DefaultRouter()
+
 router.register(
-    r'',
+    r'news',
     views.NewsViewSet,
     basename="news"
 )
+router.register(
+    r'thenewest',
+    views.TheNewestNews,
+    basename="thenewest"
+)
 
 urlpatterns = [
-    path('thenewest/',views.TheNewestNews.as_view()),
     path('', include(router.urls)),
 ]
 
