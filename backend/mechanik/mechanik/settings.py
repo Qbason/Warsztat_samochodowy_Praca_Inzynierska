@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'visit.apps.VisitConfig',
     'userinfo.apps.UserinfoConfig',
+    'event.apps.EventConfig',
     'rest_framework',
     'corsheaders'
 ]
