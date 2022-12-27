@@ -36,7 +36,9 @@ class OfferSearchByTitleViewSet(viewsets.GenericViewSet,mixins.ListModelMixin):
             raise ValidationError(
                 {"title":"Need title"}
             )
-        queryset = queryset.filter(title__icontains=title).all()
+        queryset = queryset.filter(title__icontains=title).filter(itembase__item__reservation=None).annotate(
+            ile = Count('itembase__item')
+        ).filter(ile__gt=0)
         
         return queryset
 
@@ -149,7 +151,9 @@ class OfferByCategory(viewsets.GenericViewSet,mixins.ListModelMixin):
 
         obj = Offer.objects.filter(
             itembase__category__pk=pk
-        ).all()
+        ).filter(itembase__item__reservation=None).annotate(
+            ile = Count('itembase__item')
+        ).filter(ile__gt=0)
 
         return obj
 
