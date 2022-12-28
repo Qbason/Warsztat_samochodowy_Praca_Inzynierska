@@ -11,7 +11,7 @@ from visit.models import Service, ServiceName, Repair, VisitReason, VisitDescrip
 
 from visit.serializers import ServiceSerializer, ServiceNameSerializer,\
     RepairSerializer,VisitReasonSerializer,VisitDescriptionSerializer,\
-        VisitSerializer, CarPlaceSerializer
+        VisitSerializer, CarPlaceSerializer, RepairClientSerializer
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -22,7 +22,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 class ServiceClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 
 ##############
 class ServiceNameViewSet(viewsets.ModelViewSet):
@@ -33,7 +33,7 @@ class ServiceNameViewSet(viewsets.ModelViewSet):
 class ServiceNameClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ServiceName.objects.all()
     serializer_class = ServiceNameSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 ########
 class RepairViewSet(viewsets.ModelViewSet):
     queryset = Repair.objects.all()
@@ -48,7 +48,7 @@ class VisitReasonViewSet(viewsets.ModelViewSet):
 class VisitReasonClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 ###########
 class VisitDescriptionViewSet(viewsets.ModelViewSet):
     queryset = VisitDescription.objects.all()
@@ -59,7 +59,7 @@ class VisitDescriptionViewSet(viewsets.ModelViewSet):
 class VisitDescriptionClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = VisitDescription.objects.all()
     serializer_class = VisitDescriptionSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 
 
 ########
@@ -71,7 +71,7 @@ class VisitViewSet(viewsets.ModelViewSet):
 class VisitClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
     
 
 #####
@@ -83,7 +83,7 @@ class CarPlaceViewSet(viewsets.ModelViewSet):
 class CarPlaceClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CarPlace.objects.all()
     serializer_class = CarPlaceSerializer
-    permission_classes = [IsAuthenticated,IsMechanicPermission]
+    permission_classes = [IsAuthenticated]
 
 #####
 class YourReparingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
@@ -92,7 +92,7 @@ class YourReparingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
         Return a list of reparings
     """
 
-    serializer_class = RepairSerializer
+    serializer_class = RepairClientSerializer
     permission_classes = [IsAuthenticated]
 
 

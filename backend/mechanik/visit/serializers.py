@@ -6,6 +6,13 @@ from visit.models import CarPlace,Service, ServiceName, Repair, VisitReason, Vis
 
 
 
+class RepairClientSerializer(ModelSerializer):
+
+    class Meta:
+        model = Repair
+        fields = ['pk',"visit","services","cartaken"]
+        depth = 3
+
 class RepairSerializer(ModelSerializer):
 
     class Meta:
