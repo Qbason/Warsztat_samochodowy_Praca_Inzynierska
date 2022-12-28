@@ -1,11 +1,32 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
 from garage.models import Comment, OpeningHours
+from  rest_framework.exceptions  import PermissionDenied
 
 class CommentSerializer(ModelSerializer):
 
     class Meta:
         model =  Comment
         fields = "__all__"
+
+class CommentClientSerializer(ModelSerializer):
+
+    class Meta:
+        model =  Comment
+        fields = "__all__"
+
+    def validate(self, attrs):
+
+        user = self.context['request'].user
+        authorid = self.context['request'].data.get('author')
+
+        isExist = Comment.objects.filter(
+            author=user.userinfo,author_id=authorid
+        ).exists()
+
+        if(not isExist):
+            raise PermissionDenied("Brak uprawnień do zasobu")
+
+        return super().validate(attrs)
 
 class OpeningHoursSerializer(ModelSerializer):
 

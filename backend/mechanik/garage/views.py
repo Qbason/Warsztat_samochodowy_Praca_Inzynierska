@@ -1,8 +1,13 @@
 from garage.models import Comment,OpeningHours
-from garage.serializers import CommentSerializer,OpeningHoursSerializer
+from garage.serializers import *
 
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from basetools.custompermissions import IsMechanicPermission
+from rest_framework import mixins
+
+
 
 import datetime
 
@@ -10,17 +15,9 @@ import datetime
 
 class CommentClientViewSet(viewsets.ModelViewSet):
 
-    serializer_class = CommentSerializer 
+    serializer_class = CommentClientSerializer 
+    queryset = Comment.objects.all()
     
-    def get_queryset(self):
-
-        user = self.request.user
-
-        qs = Comment.objects.filter(
-            author = user.userinfo
-        )
-
-        return qs
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user.userinfo)
@@ -28,12 +25,12 @@ class CommentClientViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-
+    permission_classes = [IsAuthenticated,IsMechanicPermission]
 
 class OpeningHoursViewSet(viewsets.ModelViewSet):
     queryset = OpeningHours.objects.all()
     serializer_class = OpeningHoursSerializer
-
+    permission_classes = [IsAuthenticated,IsMechanicPermission]
 
 class CheckOpeningHoursToday(viewsets.GenericViewSet):
 
