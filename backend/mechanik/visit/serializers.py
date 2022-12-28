@@ -11,7 +11,7 @@ class RepairClientSerializer(ModelSerializer):
     class Meta:
         model = Repair
         fields = ['pk',"visit","services","cartaken"]
-        depth = 3
+        # depth = 1
 
 class RepairSerializer(ModelSerializer):
 
@@ -37,14 +37,28 @@ class VisitSerializer(ModelSerializer):
         model = Visit
         fields = '__all__'
 
+class VisitClientSerializer(ModelSerializer):
+
+    class Meta:
+        model = Visit
+        fields = '__all__'
+        depth=3
+
 
 class ServiceSerializer(ModelSerializer):
-
 
     class Meta:
         model = Service
         fields = '__all__'
         read_only_fields = ['date_start','date_end','duration']
+
+class ServiceClientSerializer(ModelSerializer):
+
+    class Meta:
+        model = Service
+        fields = '__all__'
+        read_only_fields = ['date_start','date_end','duration']
+        depth = 1 
 
 class ServiceNameSerializer(ModelSerializer):
 

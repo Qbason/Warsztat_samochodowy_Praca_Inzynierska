@@ -15,6 +15,18 @@ router.register(
     basename="openinghours"
 )
 
+router.register(
+    'comment',
+    views.CommentViewSet,
+    basename="comment"
+)
+
+router.register(
+    'commentClient',
+    views.CommentClientViewSet,
+    basename="commentClient"
+)
+
 urlpatterns = [
         path('',include(router.urls))
 ]

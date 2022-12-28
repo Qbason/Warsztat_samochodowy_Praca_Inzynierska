@@ -9,9 +9,7 @@ from rest_framework import status,mixins
 from visit.models import Service, ServiceName, Repair, VisitReason, VisitDescription,\
     Visit, CarPlace
 
-from visit.serializers import ServiceSerializer, ServiceNameSerializer,\
-    RepairSerializer,VisitReasonSerializer,VisitDescriptionSerializer,\
-        VisitSerializer, CarPlaceSerializer, RepairClientSerializer
+from visit.serializers import *
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -21,7 +19,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 class ServiceClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Service.objects.all()
-    serializer_class = ServiceSerializer
+    serializer_class = ServiceClientSerializer
     permission_classes = [IsAuthenticated]
 
 ##############
@@ -70,7 +68,7 @@ class VisitViewSet(viewsets.ModelViewSet):
     
 class VisitClientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Visit.objects.all()
-    serializer_class = VisitSerializer
+    serializer_class = VisitClientSerializer
     permission_classes = [IsAuthenticated]
     
 
@@ -86,7 +84,7 @@ class CarPlaceClientViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
 #####
-class YourRepairingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
+class MyRepairingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
     """
     description:
         Return a list of reparings cars
@@ -105,7 +103,7 @@ class YourRepairingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
 
         return repairs
 
-class YourRepairedCars(viewsets.GenericViewSet,mixins.ListModelMixin):
+class MyRepairedCars(viewsets.GenericViewSet,mixins.ListModelMixin):
     """
     description:
         Return a list of repaired cars

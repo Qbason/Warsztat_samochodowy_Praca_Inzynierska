@@ -8,6 +8,23 @@ import datetime
 
 
 
+class CommentClientViewSet(viewsets.ModelViewSet):
+
+    serializer_class = CommentSerializer 
+    
+    def get_queryset(self):
+
+        user = self.request.user
+
+        qs = Comment.objects.filter(
+            author = user.userinfo
+        )
+
+        return qs
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.userinfo)
+
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
