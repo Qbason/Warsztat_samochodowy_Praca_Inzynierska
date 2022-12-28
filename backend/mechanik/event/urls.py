@@ -10,12 +10,6 @@ router.register(
     basename="event"
 )
 
-router.register(
-    r'eventClient',
-    views.EventClientViewSet,
-    basename="eventClient"
-)
-
 urlpatterns = [
         path('',include(router.urls))
 ]
