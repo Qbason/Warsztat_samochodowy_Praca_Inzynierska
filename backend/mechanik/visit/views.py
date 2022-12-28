@@ -86,10 +86,10 @@ class CarPlaceClientViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
 #####
-class YourReparingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
+class YourRepairingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
     """
     description:
-        Return a list of reparings
+        Return a list of reparings cars
     """
 
     serializer_class = RepairClientSerializer
@@ -100,7 +100,26 @@ class YourReparingCars(viewsets.GenericViewSet,mixins.ListModelMixin):
         user = self.request.user
 
         repairs = Repair.objects.filter(
-            visit__car__owner__user=user
+            visit__car__owner__user=user,cartaken=False
+        )
+
+        return repairs
+
+class YourRepairedCars(viewsets.GenericViewSet,mixins.ListModelMixin):
+    """
+    description:
+        Return a list of repaired cars
+    """
+
+    serializer_class = RepairClientSerializer
+    permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        user = self.request.user
+
+        repairs = Repair.objects.filter(
+            visit__car__owner__user=user,cartaken=True
         )
 
         return repairs

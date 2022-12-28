@@ -71,9 +71,14 @@ router.register(
     'carplaceClient'
 )
 router.register(
-    r'yourreparingcars',
-    views.YourReparingCars,
-    'yourreparingcars'
+    r'yourrepairingcars',
+    views.YourRepairingCars,
+    'yourrepairingcars'
+)
+router.register(
+    r'yourrepairedars',
+    views.YourRepairedCars,
+    'yourrepairedcars'
 )
 
 
