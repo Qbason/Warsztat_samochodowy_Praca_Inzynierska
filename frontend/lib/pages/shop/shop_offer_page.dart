@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import '../../classess/itembases.dart';
 import '../../classess/offers.dart';
@@ -110,6 +111,10 @@ class _ShopOfferPageState extends State<ShopOfferPage> {
                       child: TextField(
                         controller: controllernumber,
                         maxLines: 1,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: const InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius:
