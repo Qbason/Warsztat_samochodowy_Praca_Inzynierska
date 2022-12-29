@@ -45,20 +45,21 @@ class _ShopHomePageState extends State<ShopHomePage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-            child: SizedBox(
-              height: 500,
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {
-                    fetchOffers(widget.session);
-                  });
-                },
-                child: ListView.separated(
-                  itemCount: newestofferslist.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
+          child: SizedBox(
+            height: 625,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  fetchOffers(widget.session);
+                });
+              },
+              child: ListView.separated(
+                itemCount: newestofferslist.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    color: Colors.deepPurple.withOpacity(0.2),
+                    child: ListTile(
                       title: Text(newestofferslist[index].title),
                       leading: Image.network(newestofferslist[index].image ??
                           'http://jakubk.pl:2136/static/brakzdjecia.png'),
@@ -73,12 +74,12 @@ class _ShopHomePageState extends State<ShopHomePage> {
                           fetchOffers(widget.session);
                         });
                       },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    height: 10,
-                  ),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
+                  height: 1,
                 ),
               ),
             ),

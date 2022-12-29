@@ -43,20 +43,21 @@ class _ShopOfferByCategoryPageState extends State<ShopOfferByCategoryPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-            child: SizedBox(
-              height: 500,
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {
-                    fetchOffersByCategory1(widget.session, widget.category.pk);
-                  });
-                },
-                child: ListView.separated(
-                    itemCount: offersbycategorylist.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
+          child: SizedBox(
+            height: 700,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  fetchOffersByCategory1(widget.session, widget.category.pk);
+                });
+              },
+              child: ListView.separated(
+                  itemCount: offersbycategorylist.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      color: Colors.deepPurple.withOpacity(0.2),
+                      child: ListTile(
                         title: Text(offersbycategorylist[index].title),
                         leading: Image.network(
                             offersbycategorylist[index].image ??
@@ -73,13 +74,13 @@ class _ShopOfferByCategoryPageState extends State<ShopOfferByCategoryPage> {
                                 widget.session, widget.category.pk);
                           });
                         },
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                          height: 10,
-                        )),
-              ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                        height: 1,
+                      )),
             ),
           ),
         ),

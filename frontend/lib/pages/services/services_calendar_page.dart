@@ -21,7 +21,7 @@ class _ServicesCalendarPageState extends State<ServicesCalendarPage> {
         title: const Text('Planowane wizyty'),
         centerTitle: true,
       ),
-      body: const Text('Kalendarz``'),
+      body: const Text('Kalendarz'),
     );
   }
 }

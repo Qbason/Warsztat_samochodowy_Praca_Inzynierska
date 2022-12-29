@@ -85,6 +85,30 @@ Uri geturlMyCars() {
   return Uri.http(baseurl, url);
 }
 
+Uri geturlMyRepairingCars() {
+  String url = "/visit/myrepairingcars/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlMyRepairedCars() {
+  String url = "/visit/myrepairedcars/";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlVisitClient(id) {
+  String url = "/visit/visitClient/$id";
+
+  return Uri.http(baseurl, url);
+}
+
+Uri geturlServiceClient(id) {
+  String url = "/visit/serviceClient/$id";
+
+  return Uri.http(baseurl, url);
+}
+
 // POST
 
 Uri posturlMakeReservation() {

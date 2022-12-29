@@ -38,30 +38,34 @@ class _ShopCategoriesPageState extends State<ShopCategoriesPage> {
       ),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: 500,
+          height: 625,
           child: ListView.separated(
             itemCount: categorieslist.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  categorieslist[index].name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                color: Colors.deepPurple.withOpacity(0.2),
+                child: ListTile(
+                  title: Text(
+                    categorieslist[index].name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ShopOfferByCategoryPage(
+                        session: widget.session,
+                        category: categorieslist[index],
+                      ),
+                    ));
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ShopOfferByCategoryPage(
-                      session: widget.session,
-                      category: categorieslist[index],
-                    ),
-                  ));
-                },
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(
-              height: 10,
+              height: 1,
             ),
           ),
         ),

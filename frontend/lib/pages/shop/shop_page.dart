@@ -41,18 +41,18 @@ class _ShopPageState extends State<ShopPage> {
           backgroundColor: Colors.deepPurple,
           destinations: const [
             NavigationDestination(
-                icon: Icon(Icons.home, color: Colors.white), label: 'Home'),
+                icon: Icon(Icons.home, color: Colors.white), label: 'Główna'),
             NavigationDestination(
-                icon: Icon(Icons.search, color: Colors.white), label: 'Search'),
+                icon: Icon(Icons.search, color: Colors.white), label: 'Szukaj'),
             NavigationDestination(
                 icon: Icon(
                   Icons.category_sharp,
                   color: Colors.white,
                 ),
-                label: 'Categories'),
+                label: 'Kategorie'),
             NavigationDestination(
               icon: Icon(Icons.shopping_cart_sharp, color: Colors.white),
-              label: 'Cart',
+              label: 'Koszyk',
             ),
           ],
           onDestinationSelected: (int index) {

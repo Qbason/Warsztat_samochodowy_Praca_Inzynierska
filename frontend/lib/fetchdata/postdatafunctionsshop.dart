@@ -26,16 +26,13 @@ postmakeReservation(session, pk, number) async {
 
   if (response.statusCode == 406 || response.statusCode == 400) {
     if (checkpk && checknumber) {
-      return [
-        'Kod błędu: ${response.statusCode}',
-        '${data['pk'][0]}.\n${data['number'][0]}'
-      ];
+      return ['Błąd!', '${data['pk'][0]}.\n${data['number'][0]}'];
     } else if (checkpk) {
-      return ['Kod błędu: ${response.statusCode}', '${data['pk']}.'];
+      return ['Błąd!', '${data['pk']}.'];
     } else if (checknumber) {
-      return ['Kod błędu: ${response.statusCode}', '${data['number'][0]}.'];
+      return ['Błąd!', '${data['number'][0]}.'];
     } else {
-      return ['Kod błędu: ${response.statusCode}', '${data['info']}.'];
+      return ['Błąd!', '${data['info']}.'];
     }
     ;
   }
@@ -62,16 +59,13 @@ postcancelReservation(session, pk, number) async {
 
   if (response.statusCode == 406 || response.statusCode == 400) {
     if (checkpk && checknumber) {
-      return [
-        'Kod błędu: ${response.statusCode}',
-        '${data['pk'][0]}.\n${data['number'][0]}'
-      ];
+      return ['Błąd!', '${data['pk'][0]}.\n${data['number'][0]}'];
     } else if (checkpk) {
-      return ['Kod błędu: ${response.statusCode}', '${data['pk'][0]}'];
+      return ['Błąd!', '${data['pk'][0]}'];
     } else if (checknumber) {
-      return ['Kod błędu: ${response.statusCode}', '${data['number'][0]}'];
+      return ['Błąd!', '${data['number'][0]}'];
     } else {
-      return ['Kod błędu: ${response.statusCode}', '${data['info']}.'];
+      return ['Błąd!', '${data['info']}.'];
     }
     ;
   }

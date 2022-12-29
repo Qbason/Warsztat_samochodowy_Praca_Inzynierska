@@ -23,6 +23,13 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
 
   fetchItembase1(session, int id) async {
     itembase = await fetchItembaseClient(session, id);
+    if (itembase?.condition == 'N') {
+      itembase?.condition = 'Nowy';
+    } else if (itembase?.condition == 'U') {
+      itembase?.condition = 'Używany';
+    } else if (itembase?.condition == 'D') {
+      itembase?.condition = 'Uszkodzony';
+    }
     //print('itembaaaaaaaaaaaaaaaaaaaaase $itembase');
     setState(() {});
   }
@@ -33,12 +40,16 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
             title: Text('${errordata[0]}'),
             content: Text('${errordata[1]}'),
             actions: <Widget>[
-              MaterialButton(
-                elevation: 3.0,
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              Center(
+                child: MaterialButton(
+                  elevation: 3.0,
+                  color: Colors.deepPurple,
+                  child:
+                      const Text('Ok', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ],
           ));
@@ -63,45 +74,120 @@ class _ShopCartMyReservationPageState extends State<ShopCartMyReservationPage> {
             children: [
               Row(
                 children: [
-                  Image.network(
-                      widget.myreservation.image ??
-                          'http://jakubk.pl:2136/static/brakzdjecia.png',
-                      width: 50,
-                      height: 50),
-                  Column(
-                    children: [
-                      Text(widget.myreservation.title),
-                      Text(itembase?.condition ?? 'Błąd'),
-                      Text(widget.myreservation.price),
-                      Text('${widget.myreservation.reservednumber}'),
-                      Text(widget.myreservation.datecreated)
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Expanded(
+                      flex: 1,
+                      child: Image.network(
+                          widget.myreservation.image ??
+                              'http://jakubk.pl:2136/static/brakzdjecia.png',
+                          width: 100,
+                          height: 100),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Text(widget.myreservation.title,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Stan produktu: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(itembase?.condition ?? 'Nieznany'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Cena produktu: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('${widget.myreservation.price} zł'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Ilość zarezerwowanych sztuk: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('${widget.myreservation.reservednumber}'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Data rezerwacji: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(widget.myreservation.datecreated),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
-              Text(widget.myreservation.description),
-              TextButton(
-                  onPressed: () async {
-                    var errordata = await postcancelReservation(
-                        widget.session,
-                        widget.myreservation.pk,
-                        widget.myreservation.reservednumber);
+              const SizedBox(height: 10),
+              Column(
+                children: [
+                  const Text('Opis produktu:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(widget.myreservation.description),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                          onPressed: () async {
+                            var errordata = await postcancelReservation(
+                                widget.session,
+                                widget.myreservation.pk,
+                                widget.myreservation.reservednumber);
 
-                    if (errordata != null) {
-                      createAlertDialog(errordata);
-                    } else {
-                      errordata = ['Gotowe!', 'Rezerwacja została anulowana!'];
-                      createAlertDialog(errordata);
-                      widget.myreservation.reservednumber = 0;
-                    }
-                    setState(() {});
-                  },
-                  child: const Text('Anuluj rezerwację!')),
-              TextButton(
-                child: const Text('Zamknij ofertę'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                            if (errordata != null) {
+                              createAlertDialog(errordata);
+                            } else {
+                              errordata = [
+                                'Gotowe!',
+                                'Rezerwacja została anulowana!'
+                              ];
+                              createAlertDialog(errordata);
+                              widget.myreservation.reservednumber = 0;
+                            }
+                            setState(() {});
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Anuluj rezerwację!')),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text('Zamknij'),
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           ),

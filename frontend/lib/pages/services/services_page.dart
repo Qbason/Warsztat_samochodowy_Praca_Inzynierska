@@ -33,22 +33,37 @@ class _ServicesPageState extends State<ServicesPage> {
     return Scaffold(
       drawer: NavigationDrawerWidget(session: widget.session),
       body: pages[currentPage],
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(
-              icon: Icon(Icons.car_repair_sharp), label: 'Cars'),
-          NavigationDestination(
-              icon: Icon(Icons.punch_clock_sharp), label: 'History'),
-          NavigationDestination(
-              icon: Icon(Icons.calendar_month_sharp), label: 'Calendar'),
-        ],
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
-        },
-        selectedIndex: currentPage,
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+            indicatorColor: Colors.white.withOpacity(0.25),
+            labelTextStyle: MaterialStateProperty.all(const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ))),
+        child: NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          backgroundColor: Colors.deepPurple,
+          destinations: const [
+            NavigationDestination(
+                icon: Icon(Icons.home, color: Colors.white), label: 'Główna'),
+            NavigationDestination(
+                icon: Icon(Icons.car_repair_sharp, color: Colors.white),
+                label: 'Auta'),
+            NavigationDestination(
+                icon: Icon(Icons.punch_clock_sharp, color: Colors.white),
+                label: 'Historia'),
+            NavigationDestination(
+                icon: Icon(Icons.calendar_month_sharp, color: Colors.white),
+                label: 'Kalendarz'),
+          ],
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPage = index;
+            });
+          },
+          selectedIndex: currentPage,
+        ),
       ),
     );
   }

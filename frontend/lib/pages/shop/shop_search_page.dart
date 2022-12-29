@@ -22,6 +22,17 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
     setState(() {});
   }
 
+  searchfunction() async {
+    // if (controllersearch.text == '') {
+    //   createAlertDialog();
+    // }
+    await fetchOffersByTitle1(widget.session, controllersearch.text);
+    //controllersearch.text = '';
+    //hiding keyboard
+    //FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {});
+  }
+
   createAlertDialog() => showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -42,6 +53,7 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
   @override
   void initState() {
     super.initState();
+    controllersearch.addListener(searchfunction);
   }
 
   @override
@@ -102,40 +114,45 @@ class _ShopSearchPageState extends State<ShopSearchPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Center(
-                child: Text('Szukane produkty:',
-                    style: (TextStyle(
-                      fontSize: 30,
-                    ))),
-              ),
-              const SizedBox(height: 20),
+              if (offersbytitlelist.isEmpty)
+                const Center(
+                  child: Text('Szukane produkty:',
+                      style: (TextStyle(
+                        fontSize: 30,
+                      ))),
+                ),
               if (offersbytitlelist.isNotEmpty)
                 SizedBox(
-                  height: 500,
+                  height: 600,
                   child: ListView.separated(
                     itemCount: offersbytitlelist.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(offersbytitlelist[index].title),
-                        leading: Image.network(offersbytitlelist[index].image ??
-                            'http://jakubk.pl:2136/static/brakzdjecia.png'),
-                        onTap: () async {
-                          await Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ShopOfferPage(
-                              session: widget.session,
-                              offer: offersbytitlelist[index],
-                            ),
-                          ));
-                          setState(() {
-                            fetchOffersByTitle1(
-                                widget.session, controllersearch.text);
-                          });
-                        },
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        color: Colors.deepPurple.withOpacity(0.2),
+                        child: ListTile(
+                          title: Text(offersbytitlelist[index].title),
+                          leading: Image.network(offersbytitlelist[index]
+                                  .image ??
+                              'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                          onTap: () async {
+                            await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ShopOfferPage(
+                                session: widget.session,
+                                offer: offersbytitlelist[index],
+                              ),
+                            ));
+                            setState(() {
+                              fetchOffersByTitle1(
+                                  widget.session, controllersearch.text);
+                            });
+                          },
+                        ),
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(
-                      height: 10,
+                      height: 1,
                     ),
                   ),
                 ),

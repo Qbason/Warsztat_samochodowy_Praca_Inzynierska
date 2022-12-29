@@ -18,10 +18,10 @@ class _ServicesHistoryPageState extends State<ServicesHistoryPage> {
       drawer: NavigationDrawerWidget(session: widget.session),
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: const Text('Historia napraw'),
+        title: const Text('Historia wizyt'),
         centerTitle: true,
       ),
-      body: const Text('Historia napraw'),
+      body: const Text('Historia wizyt'),
     );
   }
 }

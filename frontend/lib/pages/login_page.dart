@@ -32,6 +32,26 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  createAlertDialog(errordata) => showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            title: Text('${errordata[0]}'),
+            content: Text('${errordata[1]}'),
+            actions: <Widget>[
+              Center(
+                child: MaterialButton(
+                  elevation: 3.0,
+                  color: Colors.deepPurple,
+                  child:
+                      const Text('Ok', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +69,14 @@ class _LoginPageState extends State<LoginPage> {
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(height: 50),
-                // email address
+                // login address
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
+                        color: Colors.deepPurple.withOpacity(0.1),
+                        border: Border.all(
+                            color: Colors.deepPurple.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -64,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                         maxLines: 1,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Email',
+                          hintText: 'Login',
                         ),
                       ),
                     ),
@@ -77,8 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
+                        color: Colors.deepPurple.withOpacity(0.1),
+                        border: Border.all(
+                            color: Colors.deepPurple.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -140,6 +162,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               (route) => false);
                         } else {
+                          createAlertDialog([
+                            'Błąd!',
+                            'Wprowadzony login lub hasło jest nieprawidłowe!'
+                          ]);
                           print("TOKEN NIE UTWORZONY");
                         }
                       } catch (e) {

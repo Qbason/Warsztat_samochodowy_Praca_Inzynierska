@@ -39,22 +39,31 @@ class _ServicesCarsPageState extends State<ServicesCarsPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
-            height: 500,
+            height: 625,
             child: ListView.builder(
               itemCount: mycarslist.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(mycarslist[index].nrVIN),
-                  leading: Image.network(mycarslist[index].photo ??
-                      'http://jakubk.pl:2136/static/brakzdjecia.png'),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ServicesCarDetailsPage(
-                        session: widget.session,
-                        mycar: mycarslist[index],
-                      ),
-                    ));
-                  },
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  color: Colors.deepPurple.withOpacity(0.2),
+                  child: ListTile(
+                    focusColor: Colors.deepPurple,
+                    title: Center(
+                      child: Text(
+                          '${mycarslist[index].carbrand} ${mycarslist[index].carmodel}',
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                    leading: Image.network(mycarslist[index].photo ??
+                        'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ServicesCarDetailsPage(
+                          session: widget.session,
+                          mycar: mycarslist[index],
+                        ),
+                      ));
+                    },
+                  ),
                 );
               },
             ),

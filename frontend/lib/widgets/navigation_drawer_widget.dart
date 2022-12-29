@@ -38,13 +38,13 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
   fetch() async {
     myuserinfo = await SharedPreferences.getInstance();
-    name = myuserinfo?.getString('name') ?? 'Name';
-    surname = myuserinfo?.getString('surname') ?? 'Surname';
-    phonenumber = myuserinfo?.getString('phonenumber') ?? 'Phone number';
+    name = myuserinfo?.getString('name') ?? 'Imię';
+    surname = myuserinfo?.getString('surname') ?? 'Nazwisko';
+    phonenumber = myuserinfo?.getString('phonenumber') ?? 'Numer telefonu';
     email = myuserinfo?.getString('email') ?? 'Email';
     avatar = myuserinfo?.getString('avatar') ??
         'http://jakubk.pl:2136/static/brakzdjecia.png';
-    role = myuserinfo?.getString('role') ?? 'C';
+    role = myuserinfo?.getString('role') ?? 'Rola nie znana';
 
     setState(() {});
   }
@@ -69,11 +69,10 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                         ? buildHeader(
                             urlImage: avatar,
                             name: '$name $surname',
-                            email: email,
                             onClicked: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => UserPage(
-                                  name: name,
+                                  name: '$name $surname',
                                   urlImage: avatar,
                                 ),
                               ),
@@ -198,7 +197,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   buildHeader({
     required String urlImage,
     required String name,
-    required String email,
     required VoidCallback onClicked,
   }) =>
       InkWell(
@@ -217,10 +215,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     style: const TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    email,
-                    style: const TextStyle(fontSize: 13, color: Colors.white),
-                  ),
                 ],
               ),
             ],

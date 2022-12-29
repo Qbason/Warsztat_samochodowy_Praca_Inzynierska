@@ -38,43 +38,56 @@ class _ShopCartPageState extends State<ShopCartPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-            child: SizedBox(
-              height: 500,
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {
-                    fetchMyReservations1(widget.session);
-                  });
-                },
-                child: ListView.separated(
-                  itemCount: myreservationslist.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(myreservationslist[index].title),
-                      leading: Image.network(myreservationslist[index].image ??
-                          'http://jakubk.pl:2136/static/brakzdjecia.png'),
-                      onTap: () async {
-                        await Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ShopCartMyReservationPage(
-                            session: widget.session,
-                            myreservation: myreservationslist[index],
-                          ),
-                        ));
-                        setState(() {
-                          fetchMyReservations1(widget.session);
-                        });
-                      },
-                    );
+          child: Column(
+            children: [
+              if (myreservationslist.isEmpty)
+                const Center(
+                  child: Text('Brak rezerwacji.',
+                      style: (TextStyle(
+                        fontSize: 30,
+                      ))),
+                ),
+              SizedBox(
+                height: 625,
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {
+                      fetchMyReservations1(widget.session);
+                    });
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    height: 10,
+                  child: ListView.separated(
+                    itemCount: myreservationslist.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        color: Colors.deepPurple.withOpacity(0.2),
+                        child: ListTile(
+                          title: Text(myreservationslist[index].title),
+                          leading: Image.network(myreservationslist[index]
+                                  .image ??
+                              'http://jakubk.pl:2136/static/brakzdjecia.png'),
+                          onTap: () async {
+                            await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ShopCartMyReservationPage(
+                                session: widget.session,
+                                myreservation: myreservationslist[index],
+                              ),
+                            ));
+                            setState(() {
+                              fetchMyReservations1(widget.session);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 1,
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

@@ -32,12 +32,16 @@ class _ShopOfferPageState extends State<ShopOfferPage> {
             title: Text('${errordata[0]}'),
             content: Text('${errordata[1]}'),
             actions: <Widget>[
-              MaterialButton(
-                elevation: 3.0,
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              Center(
+                child: MaterialButton(
+                  elevation: 3.0,
+                  color: Colors.deepPurple,
+                  child:
+                      const Text('Ok', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ],
           ));
