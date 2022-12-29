@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-(ayvdo+wdr9u-z$od699y7(7fh*ap0^+q-9j!(!%zc#jq+2a4t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.30','192.168.1.1','78.157.187.16']
+ALLOWED_HOSTS = ['192.168.1.30','192.168.1.216','192.168.1.1','78.157.187.16','127.0.0.1',"jakubk.pl"]
 
 
 # Application definition
@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_simplejwt',
 
-    'kalendarz.apps.KalendarzConfig',
+
+    'news.apps.NewsConfig',
+    'garage.apps.GarageConfig',
+    'car.apps.CarConfig',
+    'shop.apps.ShopConfig',
+    'visit.apps.VisitConfig',
+    'userinfo.apps.UserinfoConfig',
+    'event.apps.EventConfig',
     'rest_framework',
     'corsheaders'
 ]
@@ -117,7 +125,7 @@ TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -126,7 +134,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'assets'),
+    os.path.join(BASE_DIR,'static'),
 )
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
@@ -142,7 +150,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # )
+    'DATETIME_FORMAT': '%d-%m-%Y %H:%M:%S' ,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
