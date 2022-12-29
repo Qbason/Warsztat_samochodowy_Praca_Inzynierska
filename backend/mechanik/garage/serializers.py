@@ -39,8 +39,8 @@ class OpeningHoursSerializer(ModelSerializer):
         The date start and date end must be the same
         """
         if attrs['time_start'].day != attrs['time_end'].day:
-            raise ValidationError("the dates must be the same!")
+            raise ValidationError("Daty muszą być takie same!")
         if OpeningHours.objects.filter(time_start__day=attrs['time_start'].day).first():
-            raise ValidationError("the date already exists")
+            raise ValidationError("Ta data została już wybrana")
 
         return attrs

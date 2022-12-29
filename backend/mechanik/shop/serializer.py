@@ -67,7 +67,7 @@ class OfferCancelReservationSerializer(serializers.Serializer):
             pk=value,
         )
         if not offer.count()>0:
-            raise ValidationError("You can't cancel not existing offer")
+            raise ValidationError("Nie możesz anulować oferty, która nie istnieje.")
 
         return value
 
@@ -86,7 +86,7 @@ class OfferReservationkSerializer(serializers.Serializer):
         ).first()
         #checking if offer exist
         if not offer:
-            raise ValidationError("This offer doesn't exist",code=status.HTTP_406_NOT_ACCEPTABLE)
+            raise ValidationError("Taka oferta nie istnieje",code=status.HTTP_406_NOT_ACCEPTABLE)
 
         return value
 

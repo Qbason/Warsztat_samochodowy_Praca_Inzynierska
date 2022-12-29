@@ -286,7 +286,7 @@ class MakeReservationOffer(viewsets.GenericViewSet):
         decision = self.check_if_user_has_too_much_different_reservation(itembases_filtered,pk_offer)
         #otherwise we can't make order
         if decision:
-            raise ValidationError({"pk":"User has atleast 2 reservation active"},code=status.HTTP_406_NOT_ACCEPTABLE)
+            raise ValidationError({"pk":"Posiadasz przynajmniej dwie aktywne rezerwacje."},code=status.HTTP_406_NOT_ACCEPTABLE)
     
         result = {
             "result":"FAIL"
@@ -300,7 +300,7 @@ class MakeReservationOffer(viewsets.GenericViewSet):
 
         #checking if we have enough products
         if avail_items.count()<number:
-            result['info'] = "All items already has been reserved"
+            result['info'] = "Nie ma takiej ilości na stanie"
             return Response(
                 result,
                 status=status.HTTP_406_NOT_ACCEPTABLE
@@ -319,7 +319,7 @@ class MakeReservationOffer(viewsets.GenericViewSet):
         )
 
         result['result'] = "OK"
-        result['info'] = "The item has been reserved"
+        result['info'] = "Przedmiot został zarezerwowany"
 
         return Response(
             result
