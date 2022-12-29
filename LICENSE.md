@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Jakub Kościelny
+Copyright (c) 2022 Jakub Kościelny, Karol Cieciura
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
