@@ -53,3 +53,10 @@ env_ubuntu/
 
 env_ubuntu/
 backend/env_ubuntu/*
+frontend/*
+!frontend/lib/
+backend/mechanik/db.sqlite3
+test.py
+backend/mechanik/static/
+backend/mechanik/kalendarz/migrations/
+.Trash-1000/
